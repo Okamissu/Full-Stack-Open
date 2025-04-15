@@ -2,3 +2,8 @@ body {
   background-color: #000;
   color: #fff;
 }
+
+* {
+  box-sizing: border-box;
+  margin: 0.25em;
+}
