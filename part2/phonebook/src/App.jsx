@@ -6,8 +6,14 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setPersons((prevPersons) => [...prevPersons, { name: newName }])
-    setNewName('')
+    const isDuplicate = persons.some((person) => person.name === newName)
+
+    if (!isDuplicate) {
+      setPersons((prevPersons) => [...prevPersons, { name: newName }])
+      setNewName('')
+    } else {
+      alert(`${newName} is already in the phonebook`)
+    }
   }
 
   const personsToShow = persons.map((person) => (
