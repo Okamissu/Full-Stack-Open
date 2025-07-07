@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Search from './components/Search'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -13,8 +16,10 @@ const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const trimmedName = newPerson.name.trim()
-    const isDuplicate = persons.some((person) => person.name === trimmedName)
-
+    const isDuplicate = persons.some(
+      (person) => person.name.trim().toLowerCase() === trimmedName.toLowerCase()
+    )
+    
     if (!isDuplicate) {
       setPersons([...persons, { ...newPerson, name: trimmedName }])
       setNewPerson({ name: '', phone: '' })
@@ -42,39 +47,13 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <div>
-        Search by name:{' '}
-        <input
-          value={searchName}
-          onChange={(e) => setSearchName(e.target.value)}
-        ></input>{' '}
-      </div>
-      <h2>Add a new person</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name:{' '}
-          <input
-            autoFocus
-            value={newPerson.name}
-            placeholder="Chapello Roam"
-            name="name"
-            onChange={handleChange}
-          />
-          <br />
-          number:{' '}
-          <input
-            value={newPerson.phone}
-            placeholder="123567930"
-            name="phone"
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>{personsToShow}</ul>
+      <Search searchName={searchName} setSearchName={setSearchName} />
+      <PersonForm
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        newPerson={newPerson}
+      />
+      <Persons personsToShow={personsToShow} />
     </div>
   )
 }
