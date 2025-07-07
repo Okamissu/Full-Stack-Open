@@ -3,8 +3,12 @@ import { useState } from 'react'
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', phone: '123456789' },
+    { name: 'Harto Mamarti', phone: '333444555' },
+    { name: 'Ben Hulajnoga', phone: '321123321' },
+    { name: 'Piri Kebi', phone: '777888999' },
   ])
   const [newPerson, setNewPerson] = useState({ name: '', phone: '' })
+  const [searchName, setSearchName] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -23,7 +27,13 @@ const App = () => {
     setNewPerson((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const personsToShow = persons.map((person) => (
+  const currentSearch = searchName
+    ? persons.filter((person) =>
+        person.name.toLowerCase().includes(searchName.toLowerCase())
+      )
+    : persons
+
+  const personsToShow = currentSearch.map((person) => (
     <li key={`${person.name}-${person.phone}`}>
       {person.name} - {person.phone}
     </li>
@@ -32,6 +42,14 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <div>
+        Search by name:{' '}
+        <input
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+        ></input>{' '}
+      </div>
+      <h2>Add a new person</h2>
       <form onSubmit={handleSubmit}>
         <div>
           name:{' '}
