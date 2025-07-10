@@ -1,17 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Search from './components/Search'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import axios from 'axios'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '123456789' },
-    { name: 'Harto Mamarti', phone: '333444555' },
-    { name: 'Ben Hulajnoga', phone: '321123321' },
-    { name: 'Piri Kebi', phone: '777888999' },
-  ])
+  const [persons, setPersons] = useState([])
   const [newPerson, setNewPerson] = useState({ name: '', phone: '' })
   const [searchName, setSearchName] = useState('')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get('http://localhost:3001/persons')
+      setPersons(response.data)
+    }
+    fetchData()
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -19,10 +23,9 @@ const App = () => {
     const isDuplicate = persons.some(
       (person) => person.name.trim().toLowerCase() === trimmedName.toLowerCase()
     )
-    
     if (!isDuplicate) {
       setPersons([...persons, { ...newPerson, name: trimmedName }])
-      setNewPerson({ name: '', phone: '' })
+      setNewPerson({ name: '', number: '' })
     } else {
       alert(`${trimmedName} is already in the phonebook`)
     }
@@ -39,8 +42,8 @@ const App = () => {
     : persons
 
   const personsToShow = currentSearch.map((person) => (
-    <li key={`${person.name}-${person.phone}`}>
-      {person.name} - {person.phone}
+    <li key={`${person.name}-${person.number}`}>
+      {person.name} - {person.number}
     </li>
   ))
 
