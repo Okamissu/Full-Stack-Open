@@ -26,13 +26,32 @@ const App = () => {
     )
 
     if (!isDuplicate) {
-      phonebookService.create(newPerson).then((response) => {
-        setPersons([...persons, response])
-        setNewPerson({ name: '', number: '' })
-      })
+      phonebookService
+        .create(newPerson)
+        .then((response) => {
+          setPersons([...persons, response])
+          setNewPerson({ name: '', number: '' })
+        })
+        .catch(() => {
+          alert('Failed to add person. Try again later.')
+        })
     } else {
       alert(`${trimmedName} is already in the phonebook`)
     }
+  }
+  const handleDelete = (id, name) => {
+    if (!window.confirm(`Delete ${name}?`)) return
+
+    phonebookService
+      .remove(id)
+      .then(() => {
+        setPersons((prevPersons) =>
+          prevPersons.filter((person) => person.id !== id)
+        )
+      })
+      .catch(() => {
+        alert('Already deleted from the server - refresh')
+      })
   }
 
   const currentSearch = searchName
@@ -41,11 +60,14 @@ const App = () => {
       )
     : persons
 
-  const personsToShow = currentSearch.map((person) => (
-    <li key={`${person.name}-${person.number}`}>
-      {person.name} - {person.number}
-    </li>
-  ))
+  // const personsToShow = currentSearch.map((person) => (
+  //   <li key={person.id}>
+  //     {person.name} - {person.number}
+  //     <button onClick={() => handleDelete(person.id, person.name)}>
+  //       delete
+  //     </button>
+  //   </li>
+  // ))
 
   return (
     <div>
@@ -56,7 +78,7 @@ const App = () => {
         handleChange={handleChange}
         newPerson={newPerson}
       />
-      <Persons personsToShow={personsToShow} />
+      <Persons persons={currentSearch} onDelete={handleDelete} />
     </div>
   )
 }
