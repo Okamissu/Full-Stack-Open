@@ -36,9 +36,34 @@ const App = () => {
           alert('Failed to add person. Try again later.')
         })
     } else {
-      alert(`${trimmedName} is already in the phonebook`)
+      const replace = window.confirm(
+        `${newPerson.name} is already in the phonebook - replace the old number with a new one?`
+      )
+
+      if (replace) {
+        const personToUpdate = persons.find(
+          (p) => p.name.toLowerCase() === newPerson.name.trim().toLowerCase()
+        )
+
+        if (personToUpdate) {
+          phonebookService
+            .patchNumber(personToUpdate.id, newPerson.number)
+            .then((updatedPerson) => {
+              setPersons((prevPersons) =>
+                prevPersons.map((p) =>
+                  p.id === updatedPerson.id ? updatedPerson : p
+                )
+              )
+              setNewPerson({ name: '', number: '' })
+            })
+            .catch(() => {
+              alert('Failed to update number. Try again later.')
+            })
+        }
+      }
     }
   }
+
   const handleDelete = (id, name) => {
     if (!window.confirm(`Delete ${name}?`)) return
 

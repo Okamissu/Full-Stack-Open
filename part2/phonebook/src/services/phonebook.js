@@ -16,8 +16,16 @@ const remove = (id) => {
   return request.then((response) => response.data)
 }
 
+const patchNumber = (id, number) => {
+  const request = axios.patch(`${baseUrl}/${id}`, {
+    number: number,
+  })
+  return request.then((response) => response.data)
+}
+
 export default {
   getAll,
   create,
   remove,
+  patchNumber,
 }
