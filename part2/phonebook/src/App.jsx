@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [newPerson, setNewPerson] = useState({ name: '', phone: '' })
+  const [newPerson, setNewPerson] = useState({ name: '', number: '' })
   const [searchName, setSearchName] = useState('')
 
   useEffect(() => {
@@ -24,8 +24,12 @@ const App = () => {
       (person) => person.name.trim().toLowerCase() === trimmedName.toLowerCase()
     )
     if (!isDuplicate) {
-      setPersons([...persons, { ...newPerson, name: trimmedName }])
-      setNewPerson({ name: '', number: '' })
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then((response) => {
+          setPersons([...persons, response.data])
+          setNewPerson({ name: '', number: '' })
+        })
     } else {
       alert(`${trimmedName} is already in the phonebook`)
     }
