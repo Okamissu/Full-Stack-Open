@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Search from './components/Search'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import phonebookService from './services/phonebook'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -10,33 +10,29 @@ const App = () => {
   const [searchName, setSearchName] = useState('')
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get('http://localhost:3001/persons')
-      setPersons(response.data)
-    }
-    fetchData()
+    phonebookService.getAll().then((response) => setPersons(response))
   }, [])
+
+  const handleChange = (e) => {
+    setNewPerson((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
     const trimmedName = newPerson.name.trim()
     const isDuplicate = persons.some(
       (person) => person.name.trim().toLowerCase() === trimmedName.toLowerCase()
     )
+
     if (!isDuplicate) {
-      axios
-        .post('http://localhost:3001/persons', newPerson)
-        .then((response) => {
-          setPersons([...persons, response.data])
-          setNewPerson({ name: '', number: '' })
-        })
+      phonebookService.create(newPerson).then((response) => {
+        setPersons([...persons, response])
+        setNewPerson({ name: '', number: '' })
+      })
     } else {
       alert(`${trimmedName} is already in the phonebook`)
     }
-  }
-
-  const handleChange = (e) => {
-    setNewPerson((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   const currentSearch = searchName
