@@ -5,10 +5,10 @@ import Notification from './components/Notification'
 import Footer from './components/Footer'
 
 const App = () => {
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState(null)
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService.getAll().then((response) => setNotes(response))
@@ -29,7 +29,6 @@ const App = () => {
   }
 
   const handleNoteChange = (event) => {
-    // console.log(event.target.value)
     setNewNote(event.target.value)
   }
 
@@ -62,15 +61,20 @@ const App = () => {
       <button onClick={() => setShowAll((prevShowAll) => !prevShowAll)}>
         {showAll ? 'Show important only' : 'Show all'}
       </button>
-      <ul>
-        {notesToShow.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
-        ))}
-      </ul>
+      {!notes ? (
+        <p>There are no notes...</p>
+      ) : (
+        <ul>
+          {notesToShow.map((note) => (
+            <Note
+              key={note.id}
+              note={note}
+              toggleImportance={() => toggleImportanceOf(note.id)}
+            />
+          ))}
+        </ul>
+      )}
+
       <form onSubmit={addNote}>
         <input
           value={newNote}
