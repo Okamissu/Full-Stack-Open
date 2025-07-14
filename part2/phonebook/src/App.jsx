@@ -1,13 +1,32 @@
 import { useEffect, useState } from 'react'
+import phonebookService from './services/phonebook'
 import Search from './components/Search'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import phonebookService from './services/phonebook'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newPerson, setNewPerson] = useState({ name: '', number: '' })
   const [searchName, setSearchName] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [infoMessage, setInfoMessage] = useState(null)
+
+  const showInfo = (msg, timeout = 5000) => {
+    setInfoMessage(msg)
+    setTimeout(() => setInfoMessage(null), timeout)
+  }
+
+  const showError = (msg, timeout = 5000) => {
+    setErrorMessage(msg)
+    setTimeout(() => setErrorMessage(null), timeout)
+  }
+
+  // Example messages on mount - can be deleted later
+  useEffect(() => {
+    showError('Example error', 2000)
+    showInfo('Example info', 2000)
+  }, [])
 
   useEffect(() => {
     phonebookService.getAll().then((response) => setPersons(response))
@@ -31,9 +50,10 @@ const App = () => {
         .then((response) => {
           setPersons([...persons, response])
           setNewPerson({ name: '', number: '' })
+          showInfo(`${trimmedName} was added to the phonebook.`)
         })
         .catch(() => {
-          alert('Failed to add person. Try again later.')
+          showError('Failed to add person. Try again later.')
         })
     } else {
       const replace = window.confirm(
@@ -55,9 +75,12 @@ const App = () => {
                 )
               )
               setNewPerson({ name: '', number: '' })
+              showInfo(
+                `Successfully updated number of ${personToUpdate.name} to ${newPerson.number}.`
+              )
             })
             .catch(() => {
-              alert('Failed to update number. Try again later.')
+              showError('Failed to add number. Try again later.')
             })
         }
       }
@@ -73,9 +96,10 @@ const App = () => {
         setPersons((prevPersons) =>
           prevPersons.filter((person) => person.id !== id)
         )
+        showInfo(`Successfully deleted ${name}.`)
       })
       .catch(() => {
-        alert('Already deleted from the server - refresh')
+        showError('Already deleted from the server - refresh.')
       })
   }
 
@@ -85,17 +109,9 @@ const App = () => {
       )
     : persons
 
-  // const personsToShow = currentSearch.map((person) => (
-  //   <li key={person.id}>
-  //     {person.name} - {person.number}
-  //     <button onClick={() => handleDelete(person.id, person.name)}>
-  //       delete
-  //     </button>
-  //   </li>
-  // ))
-
   return (
     <div>
+      <Notification message={errorMessage} type="error" />
       <h1>Phonebook</h1>
       <Search searchName={searchName} setSearchName={setSearchName} />
       <PersonForm
@@ -103,6 +119,7 @@ const App = () => {
         handleChange={handleChange}
         newPerson={newPerson}
       />
+      <Notification message={infoMessage} type="info" />
       <Persons persons={currentSearch} onDelete={handleDelete} />
     </div>
   )
