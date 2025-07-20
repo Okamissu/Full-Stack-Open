@@ -5,13 +5,13 @@ import Notification from './components/Notification'
 import Footer from './components/Footer'
 
 const App = () => {
-  const [notes, setNotes] = useState(null)
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    noteService.getAll().then((response) => setNotes(response))
+    noteService.getAll().then((response) => setNotes(response || []))
   }, [])
 
   const addNote = (event) => {
@@ -61,9 +61,7 @@ const App = () => {
       <button onClick={() => setShowAll((prevShowAll) => !prevShowAll)}>
         {showAll ? 'Show important only' : 'Show all'}
       </button>
-      {!notes ? (
-        <p>There are no notes...</p>
-      ) : (
+      {notesToShow && notesToShow.length > 0 ? (
         <ul>
           {notesToShow.map((note) => (
             <Note
@@ -73,6 +71,8 @@ const App = () => {
             />
           ))}
         </ul>
+      ) : (
+        <p>There are no notes...</p>
       )}
 
       <form onSubmit={addNote}>
