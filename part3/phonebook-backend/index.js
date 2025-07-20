@@ -1,7 +1,21 @@
 const express = require('express')
+const morgan = require('morgan')
+const utility = require('./utility')
+
 const app = express()
 
 app.use(express.json())
+
+// Custom token for POST request bodies
+morgan.token('body', (req) => {
+  return req.method === 'POST' ? JSON.stringify(req.body) : ''
+})
+
+app.use(
+  morgan(`:method :url :status :res[content-length] - :response-time ms :body`)
+)
+
+// app.use(utility.requestLogger)
 
 let persons = [
   {
@@ -26,14 +40,6 @@ let persons = [
   },
 ]
 
-const generateId = () => {
-  let id
-  do {
-    id = Math.floor(Math.random() * 1_000_000_000).toString()
-  } while (persons.some((person) => person.id === id))
-  return id
-}
-
 app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
@@ -48,7 +54,7 @@ app.post('/api/persons', (req, res) => {
   }
 
   const person = {
-    id: generateId(),
+    id: utility.generateId(persons.map((person) => person.id)),
     name: body.name,
     number: body.number,
   }
