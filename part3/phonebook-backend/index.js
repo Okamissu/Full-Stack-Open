@@ -13,6 +13,8 @@ app.use(
   morgan(`:method :url :status :res[content-length] - :response-time ms :body`)
 )
 
+app.use(express.static('dist'))
+
 // Custom token for POST request bodies
 morgan.token('body', (req) => {
   return req.method === 'POST' ? JSON.stringify(req.body) : ''
