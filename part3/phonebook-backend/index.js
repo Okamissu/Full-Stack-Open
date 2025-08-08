@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const Person = require('./models/person')
 const morgan = require('morgan')
+const errorHandler = require('./utils/middleware/errorHandler')
 
 const app = express()
 
@@ -18,13 +19,10 @@ morgan.token('body', (request) => {
   return request.method === 'POST' ? JSON.stringify(request.body) : ''
 })
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
   Person.find({})
     .then((people) => response.json(people))
-    .catch((err) => {
-      console.error('Error fetching people: ', err)
-      response.status(500).send('Internal Server Error')
-    })
+    .catch((error) => next(error))
 })
 
 app.post('/api/persons', (request, response) => {
@@ -45,29 +43,34 @@ app.post('/api/persons', (request, response) => {
   person.save().then((savedPerson) => response.status(201).json(savedPerson))
 })
 
-app.get('/api/persons/:id', (request, response) => {
-  Person.findById(request.params.id).then((person) => response.json(person))
+app.get('/api/persons/:id', (request, response, next) => {
+  Person.findById(request.params.id)
+    .then((person) => response.json(person))
+    .catch((error) => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  persons = persons.filter((person) => person.id !== id)
-
-  response.status(204).end()
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndDelete(request.params.id)
+    .then((result) => response.status(204).end())
+    .catch((error) => next(error))
 })
 
-app.get('/info', (request, response) => {
-  Person.countDocuments({}).then((count) => {
-    const date = new Date()
-    response.send(
-      `<p>Phonebook has info for ${count} people.</p><p>${date}</p>`
-    )
-  })
+app.get('/info', (request, response, next) => {
+  Person.countDocuments({})
+    .then((count) => {
+      const date = new Date()
+      response.send(
+        `<p>Phonebook has info for ${count} people.</p><p>${date}</p>`
+      )
+    })
+    .catch((error) => next(error))
 })
 
 app.use((request, response) => {
   response.status(404).json({ error: 'Unknown endpoint' })
 })
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 
