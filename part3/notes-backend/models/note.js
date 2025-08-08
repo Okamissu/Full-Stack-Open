@@ -3,8 +3,6 @@ mongoose.set('strictQuery', false)
 
 const url = process.env.MONGODB_URI
 
-console.log('connect to', url)
-
 mongoose
   .connect(url)
   .then((result) => {

@@ -5,8 +5,8 @@ const requestLogger = require('./utils/logger')
 
 const app = express()
 
-app.use(requestLogger)
 app.use(express.json())
+app.use(requestLogger)
 app.use(express.static('dist'))
 
 app.get('/', (request, response) => {
