@@ -52,8 +52,9 @@ const App = () => {
           setNewPerson({ name: '', number: '' })
           showInfo(`${trimmedName} was added to the phonebook.`)
         })
-        .catch(() => {
-          showError('Failed to add person. Try again later.')
+        .catch((error) => {
+          console.error(error.response.data.error)
+          showError(`Failed to add person: ${error.response.data.error}`)
         })
     } else {
       const replace = window.confirm(
@@ -79,8 +80,9 @@ const App = () => {
                 `Successfully updated number of ${personToUpdate.name} to ${newPerson.number}.`
               )
             })
-            .catch(() => {
-              showError('Failed to add number. Try again later.')
+            .catch((error) => {
+              console.error(error.response.data.error)
+              showError(`Failed to add number: ${error.response.data.error}`)
             })
         }
       }
@@ -98,8 +100,9 @@ const App = () => {
         )
         showInfo(`Successfully deleted ${name}.`)
       })
-      .catch(() => {
-        showError('Already deleted from the server - refresh.')
+      .catch((error) => {
+        console.error(error.response.data.error)
+        showError(`Failed to delete ${name}: ${error.response.data.error}`)
       })
   }
 
