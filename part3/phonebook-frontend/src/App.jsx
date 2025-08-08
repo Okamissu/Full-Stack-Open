@@ -67,7 +67,7 @@ const App = () => {
 
         if (personToUpdate) {
           phonebookService
-            .patchNumber(personToUpdate.id, newPerson.number)
+            .patchNumber(personToUpdate.id, trimmedName, newPerson.number)
             .then((updatedPerson) => {
               setPersons((prevPersons) =>
                 prevPersons.map((p) =>
