@@ -34,7 +34,7 @@ if (process.argv.length < 4) {
       mongoose.connection.close()
     })
   return
-} else if (process.argv.length == 4) {
+} else if (process.argv.length === 4) {
   console.error('Please provide both name and number as arguments')
   process.exit(1)
 } else if (process.argv.length >= 5) {
