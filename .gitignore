@@ -18,6 +18,7 @@ pnpm-debug.log*
 # System files
 .DS_Store
 Thumbs.db
+.directory
 
 # Test coverage
 coverage/
