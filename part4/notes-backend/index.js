@@ -1,5 +1,5 @@
-require('dotenv').config()
 const express = require('express')
+const config = require('./utils/config')
 const Note = require('./models/note')
 const requestLogger = require('./utils/logger')
 
@@ -86,7 +86,7 @@ const errorHandler = (error, request, response, next) => {
 app.use(unknownEndpoint)
 app.use(errorHandler)
 
-const PORT = process.env.PORT
+const PORT = config.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
