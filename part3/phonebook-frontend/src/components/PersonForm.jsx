@@ -16,7 +16,7 @@ const PersonForm = ({ handleSubmit, handleChange, newPerson }) => {
           number:{' '}
           <input
             value={newPerson.number}
-            placeholder="123567930"
+            placeholder="123-567930"
             name="number"
             onChange={handleChange}
           />
