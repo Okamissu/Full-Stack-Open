@@ -1,0 +1,18 @@
+{
+  "name": "bloglist-backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --env-file=.env index.js ",
+    "dev": "node --env-file=.env --watch --inspect index.js ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.3.0"
+  }
+}
