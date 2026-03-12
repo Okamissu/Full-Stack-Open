@@ -1,7 +1,7 @@
 {
   "name": "notes-backend",
   "version": "0.0.1",
-  "description": "fso part 3",
+  "description": "fso part 4",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
