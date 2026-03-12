@@ -1,11 +1,3 @@
-const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
-}
-
 const info = (...params) => {
   console.log(...params)
 }
@@ -14,4 +6,4 @@ const error = (...params) => {
   console.error(...params)
 }
 
-module.exports = { requestLogger, info, error }
+module.exports = { info, error }
