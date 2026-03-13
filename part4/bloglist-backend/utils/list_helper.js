@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable */
 const dummy = (blogs) => {
   return 1
 }
@@ -21,8 +21,33 @@ const favoriteBlog = (blogList) => {
   return currentBest
 }
 
+const mostBlogs = (blogList) => {
+  if (blogList.length < 1) return null
+
+  const blogsPerAuthor = {}
+
+  for (const blog of blogList) {
+    if (blogsPerAuthor[blog.author]) {
+      blogsPerAuthor[blog.author]++
+    } else {
+      blogsPerAuthor[blog.author] = 1
+    }
+  }
+
+  let bestAuthor = null
+
+  for (const author in blogsPerAuthor) {
+    if (!bestAuthor || blogsPerAuthor[author] > bestAuthor.blogs) {
+      bestAuthor = { author, blogs: blogsPerAuthor[author] }
+    }
+  }
+
+  return bestAuthor
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 }
