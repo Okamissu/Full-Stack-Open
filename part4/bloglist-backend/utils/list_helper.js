@@ -45,9 +45,34 @@ const mostBlogs = (blogList) => {
   return bestAuthor
 }
 
+const mostLikes = (blogList) => {
+  if (blogList.length < 1) return null
+
+  const likesPerAuthor = {}
+
+  for (const blog of blogList) {
+    if (likesPerAuthor[blog.author]) {
+      likesPerAuthor[blog.author] += blog.likes
+    } else {
+      likesPerAuthor[blog.author] = blog.likes
+    }
+  }
+
+  let bestAuthor = null
+
+  for (const author in likesPerAuthor) {
+    if (!bestAuthor || likesPerAuthor[author] > bestAuthor.likes) {
+      bestAuthor = { author, likes: likesPerAuthor[author] }
+    }
+  }
+
+  return bestAuthor
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }
