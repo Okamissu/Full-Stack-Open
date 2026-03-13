@@ -4,9 +4,9 @@
   "description": "fso part 4",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch --inspect index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development node --watch --inspect index.js",
+    "test": "NODE_ENV=test node --test",
     "build:ui": "rm -rf dist && cd ../notes-frontend && npm run build && cp -r dist ../notes-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "lint": "eslint ."
@@ -22,6 +22,7 @@
     "@eslint/js": "^9.33.0",
     "@stylistic/eslint-plugin": "^5.2.3",
     "eslint": "^9.33.0",
-    "globals": "^16.3.0"
+    "globals": "^16.3.0",
+    "supertest": "^7.2.2"
   }
 }
