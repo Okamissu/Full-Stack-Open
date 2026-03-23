@@ -80,6 +80,20 @@ describe('note api', () => {
 
     assert.deepStrictEqual(resultNote.body, noteToView)
   })
+
+  test('a note can be deleted', async () => {
+    const notesAtStart = await helper.notesInDb()
+    const noteToDelete = notesAtStart[0]
+
+    await api.delete(`/api/notes/${noteToDelete.id}`).expect(204) // no content
+
+    const notesAtEnd = await helper.notesInDb()
+
+    const ids = notesAtEnd.map((n) => n.id)
+    assert(!ids.includes(noteToDelete.id))
+
+    assert.strictEqual(notesAtEnd.length, helper.initialNotes.length - 1)
+  })
 })
 
 after(async () => {
