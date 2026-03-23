@@ -7,9 +7,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env index.js ",
-    "dev": "node --env-file=.env --watch --inspect index.js ",
-    "test": "node --test",
+    "start": "NODE_ENV=production node --env-file=.env index.js ",
+    "dev": "NODE_ENV=dev node --env-file=.env --watch --inspect index.js ",
+    "test": "NODE_ENV=test node --test",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -20,6 +20,7 @@
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "eslint": "^10.0.3",
-    "globals": "^17.4.0"
+    "globals": "^17.4.0",
+    "supertest": "^7.2.2"
   }
 }

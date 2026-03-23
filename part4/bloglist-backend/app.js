@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const { MONGODB_URI } = process.env
+const { MONGODB_URI } = require('./utils/config')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 const blogsRouter = require('./controllers/blogs')
