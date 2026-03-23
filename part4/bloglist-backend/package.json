@@ -8,11 +8,12 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node --env-file=.env index.js ",
-    "dev": "NODE_ENV=dev node --env-file=.env --watch --inspect index.js ",
+    "dev": "NODE_ENV=development node --env-file=.env --watch --inspect index.js ",
     "test": "NODE_ENV=test node --test",
     "lint": "eslint ."
   },
   "dependencies": {
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "mongoose": "^9.3.0"
   },

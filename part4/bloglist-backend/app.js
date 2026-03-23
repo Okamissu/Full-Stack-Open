@@ -1,16 +1,16 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const { MONGODB_URI } = require('./utils/config')
+const config = require('./utils/config')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 const blogsRouter = require('./controllers/blogs')
 
 const app = express()
 
-logger.info(`connecting to ${MONGODB_URI}`)
+logger.info(`connecting to ${config.MONGODB_URI}`)
 
 mongoose
-  .connect(MONGODB_URI, { family: 4 })
+  .connect(config.MONGODB_URI, { family: 4 })
   .then(() => logger.info('connected to MongoDB'))
   .catch((err) => logger.error(`error connecting to MongoDB: ${err.message}`))
 
