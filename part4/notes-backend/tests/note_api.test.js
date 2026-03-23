@@ -10,11 +10,7 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await Note.deleteMany({})
-
-  for (const note of helper.initialNotes) {
-    const noteObject = new Note(note)
-    await noteObject.save()
-  }
+  await Note.insertMany(helper.initialNotes)
 })
 
 describe('note api', () => {
