@@ -64,13 +64,22 @@ beforeEach(async () => {
 })
 
 describe('bloglist api', () => {
-  test('all notes are returned as JSON', async () => {
+  test('blogs are returned as JSON', async () => {
     const response = await api
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
     assert.strictEqual(response.body.length, initialBlogs.length)
+  })
+
+  test('blogs identifier is named "id"', async () => {
+    const response = await api.get('/api/blogs')
+
+    for (let blog of response.body) {
+      assert.ok(blog.id)
+      assert.strictEqual(blog._id, undefined)
+    }
   })
 })
 
