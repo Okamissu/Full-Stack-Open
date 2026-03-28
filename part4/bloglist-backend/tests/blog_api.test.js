@@ -86,7 +86,7 @@ describe('bloglist api', () => {
     const newBlog = {
       title: 'The Doxie Blog',
       author: 'Leia',
-      url: 'https://thecatblog.blogspot.com/',
+      url: 'https://thedoxieblog.blogspot.com/',
       likes: 0,
     }
 
@@ -99,12 +99,23 @@ describe('bloglist api', () => {
     const response = await api.get('/api/blogs')
     const blogsAtEnd = response.body
 
-
     assert.strictEqual(blogsAtEnd.length, initialBlogs.length + 1)
 
     const titles = blogsAtEnd.map((blog) => blog.title)
     assert(titles.includes('The Doxie Blog'))
   })
+})
+
+test('adding a new blog without likes defaults it to 0', async () => {
+  const newBlog = {
+    title: 'The Kitty Blog',
+    author: 'Dion',
+    url: 'https://thekittyblog.blogspot.com/',
+  }
+
+  const response = await api.post('/api/blogs').send(newBlog).expect(201)
+
+  assert.strictEqual(response.body.likes, 0)
 })
 
 after(async () => {
