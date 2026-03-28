@@ -8,6 +8,13 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
+  if (
+    !Object.hasOwn(request.body, 'title') ||
+    !Object.hasOwn(request.body, 'url')
+  ) {
+    response.status(400).send('Missing properties')
+  }
+
   const blog = new Blog(request.body)
 
   const result = await blog.save()

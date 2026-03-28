@@ -104,18 +104,37 @@ describe('bloglist api', () => {
     const titles = blogsAtEnd.map((blog) => blog.title)
     assert(titles.includes('The Doxie Blog'))
   })
-})
 
-test('adding a new blog without likes defaults it to 0', async () => {
-  const newBlog = {
-    title: 'The Kitty Blog',
-    author: 'Dion',
-    url: 'https://thekittyblog.blogspot.com/',
-  }
+  test('adding a new blog without likes defaults it to 0', async () => {
+    const newBlog = {
+      title: 'The Kitty Blog',
+      author: 'Dion',
+      url: 'https://thekittyblog.blogspot.com/',
+    }
 
-  const response = await api.post('/api/blogs').send(newBlog).expect(201)
+    const response = await api.post('/api/blogs').send(newBlog).expect(201)
 
-  assert.strictEqual(response.body.likes, 0)
+    assert.strictEqual(response.body.likes, 0)
+  })
+
+  test('adding a new blog with title missing returns 400 bad request', async () => {
+    const newBlog = {
+      author: 'Dion',
+      url: 'https://thekittyblog.blogspot.com/',
+      likes: 0,
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(400)
+  })
+  test('adding a new blog with url missing returns 400 bad request', async () => {
+    const newBlog = {
+      title: 'The Kitty Blog',
+      author: 'Dion',
+      likes: 0,
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(400)
+  })
 })
 
 after(async () => {
