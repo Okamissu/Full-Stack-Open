@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "The Cats",
-  "author": "Cute little kitten",
+  "title": "The Parrots",
+  "author": "Cute little parrots",
   "url": "https://thecatsblog.blogspot.com/",
   "likes": 9
 }
