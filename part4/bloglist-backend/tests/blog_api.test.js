@@ -81,6 +81,30 @@ describe('bloglist api', () => {
       assert.strictEqual(blog._id, undefined)
     }
   })
+
+  test('a valid blog can be added', async () => {
+    const newBlog = {
+      title: 'The Doxie Blog',
+      author: 'Leia',
+      url: 'https://thecatblog.blogspot.com/',
+      likes: 0,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const blogsAtEnd = response.body
+
+
+    assert.strictEqual(blogsAtEnd.length, initialBlogs.length + 1)
+
+    const titles = blogsAtEnd.map((blog) => blog.title)
+    assert(titles.includes('The Doxie Blog'))
+  })
 })
 
 after(async () => {
