@@ -152,7 +152,7 @@ describe('bloglist api', () => {
     await api
       .put('/api/blogs/5a422a851b54a676234d17f7')
       .send(updatedBlog)
-      .expect(201)
+      .expect(200)
   })
 })
 
