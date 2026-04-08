@@ -27,4 +27,16 @@ blogsRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
+blogsRouter.put('/:id', async (request, response) => {
+  if (
+    !Object.hasOwn(request.body, 'title') ||
+    !Object.hasOwn(request.body, 'url')
+  ) {
+    return response.status(400).send('Missing properties')
+  }
+
+  await Blog.findByIdAndUpdate(request.params.id, request.body)
+  response.status(201).end()
+})
+
 module.exports = blogsRouter

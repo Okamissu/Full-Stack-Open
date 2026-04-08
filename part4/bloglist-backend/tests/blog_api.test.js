@@ -139,6 +139,21 @@ describe('bloglist api', () => {
   test('deleting a single blog resource', async () => {
     await api.delete('/api/blogs/5a422a851b54a676234d17f7').expect(204)
   })
+
+  test('updating the information of a single blog resource', async () => {
+    const updatedBlog = {
+      _id: '5a422a851b54a676234d17f7',
+      title: 'React patterns',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 7,
+      __v: 0,
+    }
+    await api
+      .put('/api/blogs/5a422a851b54a676234d17f7')
+      .send(updatedBlog)
+      .expect(201)
+  })
 })
 
 after(async () => {
