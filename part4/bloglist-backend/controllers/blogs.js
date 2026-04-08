@@ -12,7 +12,7 @@ blogsRouter.post('/', async (request, response) => {
     !Object.hasOwn(request.body, 'title') ||
     !Object.hasOwn(request.body, 'url')
   ) {
-    response.status(400).send('Missing properties')
+    return response.status(400).send('Missing properties')
   }
 
   const blog = new Blog(request.body)
@@ -20,6 +20,11 @@ blogsRouter.post('/', async (request, response) => {
   const result = await blog.save()
 
   response.status(201).json(result)
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+  await Blog.findByIdAndDelete(request.params.id)
+  response.status(204).end()
 })
 
 module.exports = blogsRouter

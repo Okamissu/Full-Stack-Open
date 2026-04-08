@@ -135,6 +135,10 @@ describe('bloglist api', () => {
 
     await api.post('/api/blogs').send(newBlog).expect(400)
   })
+
+  test('deleting a single blog resource', async () => {
+    await api.delete('/api/blogs/5a422a851b54a676234d17f7').expect(204)
+  })
 })
 
 after(async () => {
