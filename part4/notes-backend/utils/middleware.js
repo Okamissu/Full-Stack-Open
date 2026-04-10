@@ -13,12 +13,19 @@ const unknownEndpoint = (request, response) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-  console.error(`errorHandler - ${error.message}`)
+  console.error(`errorHandler - ${error.name}: ${error.message}`)
 
-  if (error.name === 'CastError')
+  if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  else if (error.name === 'ValidationError') {
+  } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
+  } else if (
+    error.name === 'MongoServerError' &&
+    error.message.includes('E11000 duplicate key error')
+  ) {
+    return response
+      .status(400)
+      .json({ error: 'expected `username` to be unique' })
   }
 
   next(error)

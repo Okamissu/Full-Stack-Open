@@ -2,21 +2,31 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
-usersRouter.post('/', async (request, response) => {
-  const { username, name, password } = request.body
+usersRouter.post('/', async (request, response, next) => {
+  try {
+    const { username, name, password } = request.body
 
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(password, saltRounds)
+    if (!password || password.length < 8) {
+      return response
+        .status(400)
+        .json({ error: 'password must be at least 8 characters long' })
+    }
 
-  const user = new User({
-    username,
-    name,
-    passwordHash,
-  })
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  const savedUser = await user.save()
+    const user = new User({
+      username,
+      name,
+      passwordHash,
+    })
 
-  response.status(201).json(savedUser)
+    const savedUser = await user.save()
+
+    response.status(201).json(savedUser)
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = usersRouter
