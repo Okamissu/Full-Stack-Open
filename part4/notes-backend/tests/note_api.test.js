@@ -64,9 +64,14 @@ describe('viewing a specific note', () => {
 
 describe('addition of a new note', () => {
   test('succeeds with valid data', async () => {
+    await User.deleteMany()
+    await helper.createRootUser()
+    const users = await helper.usersInDb()
+
     const newNote = {
       content: 'async/await simplifies making async calls',
       important: true,
+      userId: users[0].id,
     }
 
     await api
@@ -114,11 +119,7 @@ describe('deletion of a note', () => {
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany()
-
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
-
-    await user.save()
+    await helper.createRootUser()
   })
 
   test('creation succeds with a fresh username', async () => {
