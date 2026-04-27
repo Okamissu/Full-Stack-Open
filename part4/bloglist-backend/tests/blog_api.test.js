@@ -148,7 +148,7 @@ describe('bloglist api', () => {
     await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedBlog).expect(200)
   })
 
-  describe('whem there is initially one user in db', () => {
+  describe('when there is initially one user in db', () => {
     beforeEach(async () => {
       await User.deleteMany({})
 
