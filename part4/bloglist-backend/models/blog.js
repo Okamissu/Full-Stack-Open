@@ -1,17 +1,21 @@
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
+  url: {
+    type: String,
+    required: true,
+    match:
+      /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
+  },
   title: {
     type: String,
     required: true,
     minLength: 3,
   },
   author: { type: String, required: true, minLength: 3 },
-  url: {
-    type: String,
-    required: true,
-    match:
-      /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
   likes: {
     type: Number,
