@@ -65,18 +65,24 @@ describe('addition of a new note', () => {
   test('succeeds with valid data', async () => {
     await User.deleteMany()
     await helper.createRootUser()
-    const users = await helper.usersInDb()
+
+    const loginResponse = await api.post('/api/login').send({
+      username: 'root',
+      password: 'sekret',
+    })
+
+    const token = loginResponse.body.token
 
     const newNote = {
       content: 'async/await simplifies making async calls',
       important: true,
-      userId: users[0].id,
     }
 
     await api
       .post('/api/notes')
+      .set('Authorization', `Bearer ${token}`)
       .send(newNote)
-      .expect(201) // Created
+      .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const notesAtEnd = await helper.notesInDb()
@@ -87,11 +93,25 @@ describe('addition of a new note', () => {
   })
 
   test('fails with status code 400 with invalid data', async () => {
+    await User.deleteMany()
+    await helper.createRootUser()
+
+    const loginResponse = await api.post('/api/login').send({
+      username: 'root',
+      password: 'sekret',
+    })
+
+    const token = loginResponse.body.token
+
     const newNote = {
       important: false,
     }
 
-    await api.post('/api/notes').send(newNote).expect(400) // Bad request
+    await api
+      .post('/api/notes')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newNote)
+      .expect(400)
 
     const notesAtEnd = await helper.notesInDb()
 
