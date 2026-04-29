@@ -1,14 +1,15 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog.find({}).populate('user')
 
   response.json(blogs)
 })
 
 blogsRouter.get('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id)
+  const blog = await Blog.findById(request.params.id).populate('user')
 
   if (blog) response.json(blog)
   else response.status(404).end()
@@ -22,7 +23,8 @@ blogsRouter.post('/', async (request, response) => {
     return response.status(400).send('Missing properties')
   }
 
-  const blog = new Blog(request.body)
+  const user = await User.findOne({})
+  const blog = new Blog({ ...request.body, user: user._id })
 
   const result = await blog.save()
 
