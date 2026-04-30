@@ -85,16 +85,48 @@ blogsRouter.delete('/:id', async (request, response, next) => {
   }
 })
 
-blogsRouter.put('/:id', async (request, response) => {
-  if (
-    !Object.hasOwn(request.body, 'title') ||
-    !Object.hasOwn(request.body, 'url')
-  ) {
-    return response.status(400).send('Missing properties')
-  }
+blogsRouter.put('/:id', async (request, response, next) => {
+  try {
+    const { title, url, author } = request.body
 
-  await Blog.findByIdAndUpdate(request.params.id, request.body)
-  response.status(200).end()
+    if (!title || !url || !author) {
+      return response.status(400).json({ error: 'Missing properties' })
+    }
+
+    const blog = await Blog.findById(request.params.id)
+
+    if (!blog) {
+      return response.status(404).json({ error: 'blog not found' })
+    }
+
+    const token = request.token
+    if (!token) {
+      return response.status(401).json({ error: 'token missing' })
+    }
+
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    const user = await User.findById(decodedToken.id)
+    if (!user) {
+      return response.status(401).json({ error: 'user not found' })
+    }
+
+    if (blog.user.toString() !== decodedToken.id) {
+      return response
+        .status(401)
+        .json({ error: 'not authorized to edit this blog' })
+    }
+
+    blog.title = title
+    blog.url = url
+    blog.author = author
+
+    const updatedBlog = await blog.save()
+
+    response.json(updatedBlog)
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = blogsRouter
