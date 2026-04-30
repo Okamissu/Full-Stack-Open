@@ -18,17 +18,17 @@ blogsRouter.get('/:id', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    const { title, url, author, token } = request.body
+    const { title, url, author } = request.body
 
     if (!title || !url || !author) {
       return response.status(400).json({ error: 'Missing properties' })
     }
 
-    if (!token) {
+    if (!request.token) {
       return response.status(401).json({ error: 'token missing' })
     }
 
-    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
     const user = await User.findById(decodedToken.id)
     if (!user) {
