@@ -18,18 +18,17 @@ blogsRouter.get('/:id', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    if (
-      !Object.hasOwn(request.body, 'title') ||
-      !Object.hasOwn(request.body, 'url') ||
-      !Object.hasOwn(request.body, 'author')
-    ) {
+    const { title, url, author, token } = request.body
+
+    if (!title || !url || !author) {
       return response.status(400).json({ error: 'Missing properties' })
     }
-    if (!request.token) {
+
+    if (!token) {
       return response.status(401).json({ error: 'token missing' })
     }
 
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
 
     const user = await User.findById(decodedToken.id)
     if (!user) {
@@ -37,11 +36,17 @@ blogsRouter.post('/', async (request, response, next) => {
     }
 
     const blog = new Blog({
-      ...request.body,
+      title,
+      url,
+      author,
       user: user._id,
     })
 
     const result = await blog.save()
+
+    user.blogs.push(result._id)
+    await user.save()
+
     response.status(201).json(result)
   } catch (error) {
     next(error)
