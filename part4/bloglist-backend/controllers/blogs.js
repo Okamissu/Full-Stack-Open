@@ -3,16 +3,6 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization')
-
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '')
-  }
-
-  return null
-}
-
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user')
 
@@ -35,13 +25,11 @@ blogsRouter.post('/', async (request, response, next) => {
     ) {
       return response.status(400).json({ error: 'Missing properties' })
     }
-
-    const token = getTokenFrom(request)
-    if (!token) {
+    if (!request.token) {
       return response.status(401).json({ error: 'token missing' })
     }
 
-    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
     const user = await User.findById(decodedToken.id)
     if (!user) {
