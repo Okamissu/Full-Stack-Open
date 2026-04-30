@@ -79,31 +79,33 @@ blogsRouter.put(
   userExtractor,
   async (request, response, next) => {
     try {
-      const { title, url, author } = request.body
+      const { title, url, author, likes } = request.body
 
-      if (!title || !url || !author) {
+      if (
+        title === undefined ||
+        url === undefined ||
+        author === undefined ||
+        likes === undefined
+      ) {
         return response.status(400).json({ error: 'Missing properties' })
       }
 
       const blog = await Blog.findById(request.params.id)
 
-      if (!blog) {
-        return response.status(404).json({ error: 'blog not found' })
-      }
+      if (!blog) return response.status(404).json({ error: 'blog not found' })
 
       if (blog.user.toString() !== request.user.id) {
-        return response
-          .status(401)
-          .json({ error: 'not authorized to edit this blog' })
+        return response.status(401).json({ error: 'not authorized' })
       }
 
       blog.title = title
       blog.url = url
       blog.author = author
+      blog.likes = likes
 
-      const updatedBlog = await blog.save()
+      const updated = await blog.save()
 
-      response.json(updatedBlog)
+      response.json(updated)
     } catch (error) {
       next(error)
     }
