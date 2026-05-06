@@ -9,6 +9,8 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   useEffect(() => {
     noteService.getAll().then((response) => setNotes(response || []))
@@ -39,11 +41,11 @@ const App = () => {
     noteService
       .update(id, changedNote)
       .then((response) =>
-        setNotes(notes.map((note) => (note.id === id ? response : note)))
+        setNotes(notes.map((note) => (note.id === id ? response : note))),
       )
       .catch(() => {
         setErrorMessage(
-          `Note '${note.content}' was already removed from server`
+          `Note '${note.content}' was already removed from server`,
         )
         setTimeout(() => {
           setErrorMessage(null)
@@ -54,10 +56,47 @@ const App = () => {
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
 
+  const handleLogin = (event) => {
+    event.preventDefault()
+    console.log(`logging in with ${username} - ${password}`)
+  }
+
   return (
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
+
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <div>
+          <label htmlFor="username">
+            Username
+            <input
+              type="text"
+              value={username}
+              id="username"
+              onChange={({ target }) => {
+                setUsername(target.value)
+              }}
+            />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="password">
+            Password
+            <input
+              type="password"
+              value={password}
+              id="password"
+              onChange={({ target }) => {
+                setPassword(target.value)
+              }}
+            />
+          </label>
+        </div>
+        <button type="submit">Login</button>
+      </form>
+
       <button onClick={() => setShowAll((prevShowAll) => !prevShowAll)}>
         {showAll ? 'Show important only' : 'Show all'}
       </button>
