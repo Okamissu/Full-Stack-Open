@@ -29,7 +29,6 @@ input {
 
 input:focus {
   border-color: #4f46e5;
-  outline: none;
   box-shadow: 0 0 0 3px #c7d2fe;
 }
 
