@@ -57,3 +57,22 @@ button:focus {
   outline: 3px solid #c7d2fe;
   outline-offset: 2px;
 }
+
+.notification {
+  width: fit-content;
+  padding: 0.5em 1.2em;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid black;
+  background: #e0e0e0;
+}
+
+.notification.error {
+  border: 1px solid red;
+  background: #ffc2c2;
+}
+
+.notification.info {
+  border: 1px solid blue;
+  background: #c2dbff;
+}

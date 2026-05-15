@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const BlogForm = ({ setBlogs }) => {
+const BlogForm = ({ setBlogs, setNotification }) => {
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
@@ -20,14 +20,26 @@ const BlogForm = ({ setBlogs }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const response = await blogService.create(newBlog)
+    try {
+      const response = await blogService.create(newBlog)
 
-    setBlogs((prevBlogs) => [...prevBlogs, response])
-    setNewBlog({
-      title: '',
-      author: '',
-      url: '',
-    })
+      setBlogs((prevBlogs) => [...prevBlogs, response])
+      setNewBlog({
+        title: '',
+        author: '',
+        url: '',
+      })
+
+      setNotification({
+        type: 'info',
+        message: 'Blog added',
+      })
+    } catch {
+      setNotification({
+        type: 'error',
+        message: 'Missing or incorrect blog data',
+      })
+    }
   }
 
   return (

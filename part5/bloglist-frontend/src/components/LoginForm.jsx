@@ -2,7 +2,7 @@ import { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
-const LoginForm = ({ user, setUser }) => {
+const LoginForm = ({ user, setUser, setNotification }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -19,16 +19,14 @@ const LoginForm = ({ user, setUser }) => {
       setUsername('')
       setPassword('')
     } catch {
-      // setErrorMessage('wrong credentials')
-      // setTimeout(() => {
-      //   setErrorMessage(null)
-      // }, 5000)
+      setNotification({ type: 'error', message: 'Wrong credentials' })
     }
   }
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
+    setNotification({ type: 'info', message: 'Logged out' })
   }
 
   if (user === null) {
