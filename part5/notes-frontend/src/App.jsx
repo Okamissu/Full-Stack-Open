@@ -5,6 +5,8 @@ import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import NoteForm from './components/NoteForm'
 import NoteList from './components/NoteList'
+import Togglable from './components/Togglable'
+import LogoutButton from './components/LogoutButton.jsx'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
@@ -25,12 +27,25 @@ const App = () => {
       <h1>Notes</h1>
       <Notification message={errorMessage} />
 
-      <LoginForm
-        user={user}
-        setUser={setUser}
-        setErrorMessage={setErrorMessage}
-      />
-      {user && <div>{<NoteForm setNotes={setNotes} />}</div>}
+      {!user && (
+        <Togglable buttonLabel="Log in">
+          <LoginForm
+            user={user}
+            setUser={setUser}
+            setErrorMessage={setErrorMessage}
+          />
+        </Togglable>
+      )}
+
+      {user && (
+        <>
+          <p>{user.name} logged in</p>
+          <LogoutButton setUser={setUser} />
+          <Togglable buttonLabel="New note">
+            <NoteForm setNotes={setNotes} />
+          </Togglable>
+        </>
+      )}
 
       <NoteList
         notes={notes}
