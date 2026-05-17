@@ -18,7 +18,6 @@ label {
 
 input {
   border: 1px solid #d1d5db;
-  border-radius: 6px;
   padding: 0.5em 0.75em;
   margin-bottom: 1rem;
   margin-inline: 0.5rem;
@@ -31,17 +30,14 @@ input:focus {
   box-shadow: 0 0 0 3px #c7d2fe;
 }
 
-ul {
-  padding-left: 0.75em;
-}
-/* Primary Buttons */
 button {
   background-color: #4f46e5;
   color: white;
   border: none;
-  padding: 0.5em 1.2em;
+  padding: 0.3em 0.75em;
   font-size: 1rem;
-  border-radius: 8px;
+  margin-bottom: 0.25em;
+  margin-right: 0.25em;
   cursor: pointer;
   transition:
     background-color 0.25s ease,
@@ -54,8 +50,32 @@ button:hover {
 }
 
 button:focus {
-  outline: 3px solid #c7d2fe;
-  outline-offset: 2px;
+  outline: 2px solid #c7d2fe;
+  outline-offset: 1px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  border-bottom: 1px solid #c4bfff;
+  width: fit-content;
+  margin: 0.25rem 0;
+}
+
+li p {
+  margin-block: 0.25rem;
+}
+
+li button {
+  background-color: #c2c2c2;
+  margin-bottom: 0.5rem;
+}
+
+li button:hover {
+  background-color: #b0b0b0;
 }
 
 form {
@@ -67,7 +87,6 @@ form {
 .notification {
   width: fit-content;
   padding: 0.5em 1.2em;
-  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid black;
   background: #e0e0e0;

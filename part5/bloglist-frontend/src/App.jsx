@@ -28,10 +28,29 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setNotification(null)
     }, 5000)
+
+    return () => clearTimeout(timeout)
   }, [notification])
+
+  const handleLike = async (blog) => {
+    try {
+      const updatedBlog = await blogService.update({
+        ...blog,
+        likes: blog.likes + 1,
+        user: blog.user.id,
+      })
+
+      setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)))
+    } catch {
+      setNotification({
+        type: 'error',
+        message: "Couldn't handle the like request",
+      })
+    }
+  }
 
   return (
     <>
@@ -43,8 +62,9 @@ const App = () => {
         setUser={setUser}
         setNotification={setNotification}
       />
+
       {user && (
-        <Togglable buttonLabel={'Create a new blog'} ref={blogFormRef}>
+        <Togglable buttonLabel="Create a new blog" ref={blogFormRef}>
           <BlogForm
             setBlogs={setBlogs}
             setNotification={setNotification}
@@ -53,9 +73,13 @@ const App = () => {
         </Togglable>
       )}
 
-      <BlogList blogs={blogs} setBlogs={setBlogs} />
+      <BlogList
+        blogs={blogs}
+        setBlogs={setBlogs}
+        setNotification={setNotification}
+        handleLike={handleLike}
+      />
     </>
   )
 }
-
 export default App
