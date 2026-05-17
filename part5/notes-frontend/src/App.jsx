@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import noteService from './services/notes'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
@@ -12,6 +12,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [notes, setNotes] = useState([])
   const [user, setUser] = useState(null)
+  const noteFormRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
@@ -41,8 +42,11 @@ const App = () => {
         <>
           <p>{user.name} logged in</p>
           <LogoutButton setUser={setUser} />
-          <Togglable buttonLabel="New note">
-            <NoteForm setNotes={setNotes} />
+          <Togglable buttonLabel="New note" ref={noteFormRef}>
+            <NoteForm
+              setNotes={setNotes}
+              toggleVisibility={() => noteFormRef.current.toggleVisibility()}
+            />
           </Togglable>
         </>
       )}

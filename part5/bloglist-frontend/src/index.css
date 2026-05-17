@@ -9,7 +9,7 @@ body {
 h1 {
   color: #4f46e5;
   font-size: 2rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 label {
@@ -56,6 +56,12 @@ button:hover {
 button:focus {
   outline: 3px solid #c7d2fe;
   outline-offset: 2px;
+}
+
+form {
+  border-block: 1px solid #c4bfff;
+  padding-block: 0.75rem;
+  margin-block: 0.75rem;
 }
 
 .notification {
