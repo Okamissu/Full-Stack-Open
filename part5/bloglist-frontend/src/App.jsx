@@ -43,7 +43,11 @@ const App = () => {
         user: blog.user.id,
       })
 
-      setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)))
+      setBlogs(
+        blogs.map((b) =>
+          b.id === blog.id ? { ...updatedBlog, user: blog.user } : b,
+        ),
+      )
     } catch {
       setNotification({
         type: 'error',
