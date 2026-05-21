@@ -2,7 +2,14 @@ import { useEffect, useMemo } from 'react'
 import blogService from '../services/blogs'
 import Blog from './Blog'
 
-const BlogList = ({ blogs, setBlogs, setNotification, handleLike }) => {
+const BlogList = ({
+  blogs,
+  setBlogs,
+  setNotification,
+  handleLike,
+  handleDelete,
+  user,
+}) => {
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [setBlogs])
@@ -21,6 +28,8 @@ const BlogList = ({ blogs, setBlogs, setNotification, handleLike }) => {
             blog={blog}
             setNotification={setNotification}
             handleLike={handleLike}
+            handleDelete={handleDelete}
+            user={user}
           />
         ))}
       </ul>

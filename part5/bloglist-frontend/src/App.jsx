@@ -43,7 +43,7 @@ const App = () => {
         user: blog.user.id,
       })
 
-      setBlogs(
+      setBlogs((blogs) =>
         blogs.map((b) =>
           b.id === blog.id ? { ...updatedBlog, user: blog.user } : b,
         ),
@@ -56,6 +56,29 @@ const App = () => {
     }
   }
 
+  const handleDelete = async (blog) => {
+    const confirmed = window.confirm(
+      `Remove blog ${blog.title} by ${blog.author}?`,
+    )
+
+    if (!confirmed) return
+
+    try {
+      await blogService.remove(blog.id)
+
+      setBlogs((blogs) => blogs.filter((b) => b.id !== blog.id))
+
+      setNotification({
+        type: 'info',
+        message: `Remove blog ${blog.title} by ${blog.author}`,
+      })
+    } catch {
+      setNotification({
+        type: 'error',
+        message: "Couldn't remove the blog",
+      })
+    }
+  }
   return (
     <>
       <h1>Blogs</h1>
@@ -82,6 +105,8 @@ const App = () => {
         setBlogs={setBlogs}
         setNotification={setNotification}
         handleLike={handleLike}
+        handleDelete={handleDelete}
+        user={user}
       />
     </>
   )

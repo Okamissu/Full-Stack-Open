@@ -1,7 +1,9 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleDelete, user }) => {
   const [visible, setVisible] = useState(false)
+
+  const canDelete = user && blog.user && blog.user.id === user.id
 
   return (
     <li>
@@ -18,7 +20,10 @@ const Blog = ({ blog, handleLike }) => {
           <a href={blog.url}>{blog.url}</a>
           <p>Likes: {blog.likes}</p>
           <p>Added by: {blog.user.username}</p>
-          <button onClick={() => handleLike(blog)}>💜</button>
+          <button onClick={() => handleLike(blog)}>💜 Like</button>
+          {canDelete && (
+            <button onClick={() => handleDelete(blog)}>🗑️ Remove</button>
+          )}
         </div>
       )}
     </li>
