@@ -13,6 +13,11 @@ h1 {
   margin-bottom: 1.2rem;
 }
 
+label {
+  margin-top: 0.25rem;
+  display: block;
+}
+
 /* Input Fields */
 input {
   border: 1px solid #d1d5db;
@@ -22,7 +27,7 @@ input {
   width: 100%;
   max-width: 300px;
   margin-block: 0.5rem;
-  margin-inline: 0.25rem;
+  margin-inline: 0 0.25rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: border-color 0.2s;
 }
