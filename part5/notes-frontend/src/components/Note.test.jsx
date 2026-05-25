@@ -15,7 +15,6 @@ test('renders content', () => {
     'Component testing is done with react-testing-library',
   )
 
-  screen.debug()
 
   expect(element).toBeDefined()
 })
