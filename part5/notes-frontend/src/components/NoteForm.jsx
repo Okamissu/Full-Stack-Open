@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import noteService from '../services/notes'
 
-const NoteForm = ({ setNotes, toggleVisibility }) => {
+const NoteForm = ({ createNote }) => {
   const [newNote, setNewNote] = useState('')
+
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
   }
@@ -10,16 +10,12 @@ const NoteForm = ({ setNotes, toggleVisibility }) => {
   const addNote = (event) => {
     event.preventDefault()
 
-    const noteObject = {
+    createNote({
       content: newNote,
       important: true,
-    }
+    })
 
-    noteService
-      .create(noteObject)
-      .then((response) => setNotes((prevNotes) => [...prevNotes, response]))
     setNewNote('')
-    toggleVisibility()
   }
 
   return (
@@ -28,6 +24,7 @@ const NoteForm = ({ setNotes, toggleVisibility }) => {
         value={newNote}
         placeholder="a new note..."
         onChange={handleNoteChange}
+        minLength={5}
       />
       <button type="submit">Save</button>
     </form>

@@ -23,6 +23,13 @@ const App = () => {
     }
   }, [])
 
+  const createNote = (noteObject) => {
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes((prevNotes) => [...prevNotes, returnedNote])
+      noteFormRef.current.toggleVisibility()
+    })
+  }
+
   return (
     <>
       <h1>Notes</h1>
@@ -43,10 +50,7 @@ const App = () => {
           <p>{user.name} logged in</p>
           <LogoutButton setUser={setUser} />
           <Togglable buttonLabel="New note" ref={noteFormRef}>
-            <NoteForm
-              setNotes={setNotes}
-              toggleVisibility={() => noteFormRef.current.toggleVisibility()}
-            />
+            <NoteForm createNote={createNote} />
           </Togglable>
         </>
       )}
