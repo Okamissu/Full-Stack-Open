@@ -9,7 +9,7 @@ test('<NoteForm /> updates parent state and calls onSubmit', async () => {
 
   render(<NoteForm createNote={createNote} />)
 
-  const input = screen.getByRole('textbox')
+  const input = screen.getByLabelText(/content/i)
   const sendButton = screen.getByText(/save/i)
 
   await user.type(input, 'testing a form...')

@@ -20,7 +20,7 @@ const NoteForm = ({ createNote }) => {
 
   return (
     <form onSubmit={addNote}>
-      <label htmlFor="newNote">Content:</label>
+      <label htmlFor="newNote">Content</label>
       <input
         value={newNote}
         placeholder="a new note..."
