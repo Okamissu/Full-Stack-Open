@@ -79,6 +79,33 @@ const App = () => {
       })
     }
   }
+
+  const createBlog = async (newBlog) => {
+    try {
+      const response = await blogService.create(newBlog)
+
+      setBlogs((prevBlogs) => [
+        ...prevBlogs,
+        {
+          ...response,
+          user: user,
+        },
+      ])
+
+      setNotification({
+        type: 'info',
+        message: 'Blog added',
+      })
+
+      blogFormRef.current.toggleVisibility()
+    } catch {
+      setNotification({
+        type: 'error',
+        message: 'Missing or incorrect blog data',
+      })
+    }
+  }
+
   return (
     <>
       <h1>Blogs</h1>
@@ -92,11 +119,7 @@ const App = () => {
 
       {user && (
         <Togglable buttonLabel="Create a new blog" ref={blogFormRef}>
-          <BlogForm
-            setBlogs={setBlogs}
-            setNotification={setNotification}
-            toggleVisibility={() => blogFormRef.current.toggleVisibility()}
-          />
+          <BlogForm createBlog={createBlog} />
         </Togglable>
       )}
 

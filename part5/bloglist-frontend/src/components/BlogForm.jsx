@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-const BlogForm = ({ setBlogs, setNotification, toggleVisibility }) => {
+const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
@@ -17,31 +16,16 @@ const BlogForm = ({ setBlogs, setNotification, toggleVisibility }) => {
     })
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
 
-    try {
-      const response = await blogService.create(newBlog)
+    createBlog(newBlog)
 
-      setBlogs((prevBlogs) => [...prevBlogs, response])
-      setNewBlog({
-        title: '',
-        author: '',
-        url: '',
-      })
-
-      setNotification({
-        type: 'info',
-        message: 'Blog added',
-      })
-
-      toggleVisibility()
-    } catch {
-      setNotification({
-        type: 'error',
-        message: 'Missing or incorrect blog data',
-      })
-    }
+    setNewBlog({
+      title: '',
+      author: '',
+      url: '',
+    })
   }
 
   return (
