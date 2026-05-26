@@ -58,4 +58,20 @@ describe('<Blog />', () => {
     expect(urlElement).toBeInTheDocument()
     expect(likesElement).toBeInTheDocument()
   })
+
+  test('Upon clicking like button twice, the like handler was called twice', async () => {
+    const mockHandler = vi.fn()
+
+    render(<Blog blog={blog} handleLike={mockHandler} />)
+
+    const user = userEvent.setup()
+    const detailsButton = screen.getByRole('button', { name: /show/i })
+    await user.click(detailsButton)
+
+    const likeButton = screen.getByRole('button', { name: /like/i })
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(mockHandler).toHaveBeenCalledTimes(2)
+  })
 })
