@@ -1,13 +1,8 @@
+require('dotenv').config()
+
 const mongoose = require('mongoose')
 
-if (process.argv.length < 3) {
-  console.error('Please provide the MongoDB password as an argument')
-  process.exit(1)
-}
-
-const password = process.argv[2]
-
-const url = `mongodb+srv://Okamisu:${password}@fullstackopen.gptrsmc.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=FullStackOpen`
+const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery', false)
 
