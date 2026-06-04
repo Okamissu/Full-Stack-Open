@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test'
-import { loginWith } from './helper'
+import { loginWith, createNote } from './helper'
 
 test.describe('Note app', () => {
   test.beforeEach(async ({ page, request }) => {
-    await request.post('http://localhost:5173/api/testing/reset')
-    await request.post('http://localhost:5173/api/users', {
+    await request.post('/api/testing/reset')
+    await request.post('/api/users', {
       data: {
         name: 'Matti Luukkainen',
         username: 'mluukkai',
@@ -12,7 +12,7 @@ test.describe('Note app', () => {
       },
     })
 
-    await page.goto('http://localhost:5173')
+    await page.goto('/')
   })
 
   test('front page can be opened', async ({ page }) => {
@@ -50,17 +50,13 @@ test.describe('Note app', () => {
     })
 
     test('a new note can be created', async ({ page }) => {
-      await page.getByRole('button', { name: /new note/i }).click()
-      await page.getByLabel(/content/i).fill('a new test note')
-      await page.getByRole('button', { name: /save/i }).click()
+      await createNote(page, 'a new test note')
 
       await expect(page.getByText('a new test note')).toBeVisible()
     })
     test.describe('and a note exists', () => {
       test.beforeEach(async ({ page }) => {
-        await page.getByRole('button', { name: /new note/i }).click()
-        await page.getByLabel(/content/i).fill('another test note')
-        await page.getByRole('button', { name: /save/i }).click()
+        await createNote(page, 'another test note')
 
         await expect(page.getByText('another test note')).toBeVisible()
       })
