@@ -1,9 +1,19 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('Note app', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, request }) => {
+    await request.post('http://localhost:5173/api/testing/reset')
+    await request.post('http://localhost:5173/api/users', {
+      data: {
+        name: 'Matti Luukkainen',
+        username: 'mluukkai',
+        password: 'salainen',
+      },
+    })
+
     await page.goto('http://localhost:5173')
   })
+
   test('front page can be opened', async ({ page }) => {
     const locator = page.getByRole('heading', { name: /notes/i })
     await expect(locator).toBeVisible()
