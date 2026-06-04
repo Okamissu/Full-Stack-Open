@@ -9,7 +9,8 @@
     "test": "NODE_ENV=test node --test",
     "build:ui": "rm -rf dist && cd ../notes-frontend && npm run build && cp -r dist ../notes-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:test": "NODE_ENV=test node --watch index.js"
   },
   "author": "Okamissu",
   "license": "MIT",
