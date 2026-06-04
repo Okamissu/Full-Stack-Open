@@ -48,5 +48,19 @@ test.describe('Note app', () => {
 
       await expect(page.getByText('a new test note')).toBeVisible()
     })
+    test.describe('and a note exists', () => {
+      test.beforeEach(async ({ page }) => {
+        await page.getByRole('button', { name: /new note/i }).click()
+        await page.getByLabel(/content/i).fill('another test note')
+        await page.getByRole('button', { name: /save/i }).click()
+
+        await expect(page.getByText('another test note')).toBeVisible()
+      })
+
+      test('importance can be changed', async ({ page }) => {
+        await page.getByRole('button', { name: /set not important/i }).click()
+        await expect(page.getByText(/set important/i)).toBeVisible()
+      })
+    })
   })
 })
