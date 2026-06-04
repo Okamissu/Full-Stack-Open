@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { loginWith } from './helper'
 
 test.describe('Note app', () => {
   test.beforeEach(async ({ page, request }) => {
@@ -25,29 +26,27 @@ test.describe('Note app', () => {
   })
 
   test('user can log in', async ({ page }) => {
-    await page.getByRole('button', { name: /log in/i }).click()
-    await page.getByLabel(/username/i).fill('mluukkai')
-    await page.getByLabel(/password/i).fill('salainen')
-    await page.getByRole('button', { name: /log in/i }).click()
+    await loginWith(page, 'mluukkai', 'salainen')
 
     await expect(page.getByText(/Matti Luukkainen logged in/i)).toBeVisible()
   })
 
   test('login fails with wrong password', async ({ page }) => {
-    await page.getByRole('button', { name: /log in/i }).click()
-    await page.getByLabel(/username/i).fill('mluukkai')
-    await page.getByLabel(/password/i).fill('incorrecto')
-    await page.getByRole('button', { name: /log in/i }).click()
+    await loginWith(page, 'mluukkai', 'incorrecto')
 
-    await expect(page.getByText(/wrong credentials/i)).toBeVisible()
+    const errorMessage = page.getByRole('alert')
+
+    // In real projects avaoid testing exact CSS, unless part of requirement
+    await expect(errorMessage).toHaveCSS('color', 'rgb(185, 28, 28)')
+    await expect(errorMessage).toHaveCSS('border-style', 'solid')
+
+    await expect(errorMessage).toContainText(/wrong credentials/i)
+    await expect(page.getByText('Matti Luukkainen logged in')).not.toBeVisible()
   })
 
   test.describe('when logged in', () => {
     test.beforeEach(async ({ page }) => {
-      await page.getByRole('button', { name: /log in/i }).click()
-      await page.getByLabel(/username/i).fill('mluukkai')
-      await page.getByLabel(/password/i).fill('salainen')
-      await page.getByRole('button', { name: /log in/i }).click()
+      await loginWith(page, 'mluukkai', 'salainen')
     })
 
     test('a new note can be created', async ({ page }) => {
