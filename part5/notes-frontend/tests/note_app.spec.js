@@ -54,6 +54,7 @@ test.describe('Note app', () => {
 
       await expect(page.getByText('a new test note')).toBeVisible()
     })
+
     test.describe('and a note exists', () => {
       test.beforeEach(async ({ page }) => {
         await createNote(page, 'another test note')
@@ -64,6 +65,21 @@ test.describe('Note app', () => {
       test('importance can be changed', async ({ page }) => {
         await page.getByRole('button', { name: /set not important/i }).click()
         await expect(page.getByText(/set important/i)).toBeVisible()
+      })
+    })
+
+    test.describe('and several notes exists', () => {
+      test.beforeEach(async ({ page }) => {
+        await createNote(page, 'first note')
+        await createNote(page, 'second note')
+        await createNote(page, 'third note')
+      })
+
+      test('one of those can be made non important', async ({ page }) => {
+        const noteElement = page.getByText('second note')
+
+        noteElement.getByRole('button', { name: /set not important/i }).click()
+        await expect(noteElement.getByText(/set important/i)).toBeVisible()
       })
     })
   })
