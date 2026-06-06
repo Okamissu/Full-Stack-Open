@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { createBlog, loginWith } from './helper'
 
 test.describe('Blog app', () => {
   test.beforeEach(async ({ page, request }) => {
@@ -27,45 +28,33 @@ test.describe('Blog app', () => {
 
   test.describe('Login', () => {
     test('succeeds with correct credentials', async ({ page }) => {
-      const loginForm = page.locator('form')
-
-      await loginForm.getByLabel('Username').fill('mluukkai')
-      await loginForm.getByLabel('Password').fill('salainen')
-      await loginForm.getByRole('button', { name: /login/i }).click()
+      await loginWith(page, 'mluukkai', 'salainen')
 
       await expect(page.getByText(/Matti Luukkainen logged in/i)).toBeVisible()
     })
     test('fails with invalid credentials', async ({ page }) => {
-      const loginForm = page.locator('form')
-
-      await loginForm.getByLabel('Username').fill('wrongwrrong')
-      await loginForm.getByLabel('Password').fill('wrongwrrong')
-      await loginForm.getByRole('button', { name: /login/i }).click()
+      await loginWith(page, 'mluukkai', 'wrongwrong')
 
       await expect(page.getByText(/wrong credentials/i)).toBeVisible()
     })
 
     test.describe('When logged in', () => {
       test.beforeEach(async ({ page }) => {
-        const loginForm = page.locator('form')
-        await loginForm.getByLabel('Username').fill('mluukkai')
-        await loginForm.getByLabel('Password').fill('salainen')
-        await loginForm.getByRole('button', { name: /login/i }).click()
+        await loginWith(page, 'mluukkai', 'salainen')
       })
 
       test('a new blog can be created', async ({ page }) => {
-        await page.getByRole('button', { name: /create a new blog/i }).click()
-
-        const createBlogForm = page.locator('form')
-        await createBlogForm.getByLabel(/title/i).fill('The Playwright Blog')
-        await createBlogForm.getByLabel(/author/i).fill('Playwright Creator')
-        await createBlogForm.getByLabel(/url/i).fill('http://playwright.dev/')
-
-        await createBlogForm.getByRole('button', { name: /create/i }).click()
-
+        await createBlog(
+          page,
+          'The Playwright Blog',
+          'Playwright Creator',
+          'http://playwright.dev/',
+        )
         await expect(page.getByText('The Playwright Blog')).toBeVisible()
         await expect(page.getByText('Playwright Creator')).toBeVisible()
       })
+
+      // test('')
     })
   })
 })
