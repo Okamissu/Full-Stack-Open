@@ -1,122 +1,234 @@
-/* Base Styles */
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #3730a3;
+  --primary-light: #c7d2fe;
+
+  --bg: #f7f7fb;
+  --surface: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+
+  --danger: #b91c1c;
+  --danger-bg: #fef2f2;
+  --danger-border: #fca5a5;
+
+  --radius: 10px;
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f9f9fb;
-  color: #1a1a1a;
-  margin: 2rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
   line-height: 1.6;
 }
 
+.app {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding-block: 2rem;
+}
+
 h1 {
-  color: #4f46e5;
-  font-size: 2rem;
-  margin-bottom: 1.2rem;
+  color: var(--primary);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  margin-top: 2rem;
 }
 
 label {
-  margin-top: 0.25rem;
   display: block;
+  margin-top: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
-/* Input Fields */
 input {
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  padding: 0.5em 0.75em;
-  font-size: 1rem;
+  display: block;
   width: 100%;
-  max-width: 300px;
-  margin-block: 0.5rem;
-  margin-inline: 0 0.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: border-color 0.2s;
+  max-width: 360px;
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius);
+  padding: 0.65rem 0.8rem;
+  font-size: 1rem;
+  margin-block: 0.35rem 0.75rem;
+  background: white;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 input:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px #c7d2fe;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-light);
+  outline: none;
 }
 
-ul {
-  padding-left: 0.75em;
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
 }
-/* Primary Buttons */
-button {
-  background-color: #4f46e5;
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
   color: white;
-  border: none;
-  padding: 0.5em 1.2em;
+  min-height: 2.4rem;
+  padding: 0.4rem 1.1rem;
   font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
+  font-weight: 500;
+  border-radius: var(--radius);
+  text-decoration: none;
+  box-shadow: var(--shadow);
   transition:
-    background-color 0.25s ease,
-    transform 0.1s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-block: 0.5em;
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.nav a:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.14);
+}
+
+.nav a:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
+.user-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block: 1rem 1.75rem;
+  color: var(--muted);
+}
+
+button {
+  background-color: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1.15rem;
+  wdith: fit-content;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 button:hover {
-  background-color: #4338ca;
+  background-color: #eef2ff;
+  color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.12);
 }
 
-button:focus {
-  outline: 3px solid #c7d2fe;
-  outline-offset: 2px;
+button:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
 }
 
 form {
-  padding-block: 0.25rem;
-  border-block: 1px solid #c7d2fe;
+  max-width: 460px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-block: 1rem 1.5rem;
+  box-shadow: var(--shadow);
 }
 
-/* Secondary Buttons (within note items) */
-.note button {
-  background-color: transparent;
-  color: #4f46e5;
-  border: 2px solid #4f46e5;
-  padding: 0.35em 0.9em;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: 0.75rem;
-  transition: all 0.2s ease;
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
 }
 
-.note button:hover {
-  background-color: #4f46e5;
-  color: white;
-}
-
-.note button:focus {
-  outline: 3px solid #c7d2fe;
-  outline-offset: 2px;
-}
-
-/* Note Text */
 .note {
-  background: white;
-  color: #444;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 0.8em 1em;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.65rem;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
-/* Error Notification */
+.note:hover {
+  border-color: var(--primary-light);
+  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.note button {
+  flex-shrink: 0;
+  background-color: #fafafa;
+  color: var(--primary);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+.note button:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
 .error {
-  color: #b91c1c;
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
   font-size: 1rem;
-  border-radius: 6px;
+  border-radius: var(--radius);
   padding: 0.8rem 1rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   width: fit-content;
+}
+
+footer {
+  color: var(--muted);
+  margin-top: 3rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .app {
+    width: min(100% - 1rem, 1120px);
+    padding-block: 1rem;
+  }
 }
