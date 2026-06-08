@@ -38,48 +38,34 @@ test.describe('Blog app', () => {
       await expect(page.getByText(/wrong credentials/i)).toBeVisible()
     })
 
-    test.describe('When logged in', () => {
+    test.describe('When logged in & there is a blog created by logged user', () => {
       test.beforeEach(async ({ page }) => {
         await loginWith(page, 'mluukkai', 'salainen')
-      })
-
-      test('a new blog can be created', async ({ page }) => {
         await createBlog(
           page,
           'The Playwright Blog',
           'Playwright Creator',
           'http://playwright.dev/',
         )
+      })
+
+      test('a new blog can be created', async ({ page }) => {
         await expect(page.getByText('The Playwright Blog')).toBeVisible()
         await expect(page.getByText('Playwright Creator')).toBeVisible()
       })
 
       test('a newly created blog can be liked', async ({ page }) => {
-        await createBlog(
-          page,
-          'The Playwright Blog',
-          'Playwright Creator',
-          'http://playwright.dev/',
-        )
-
-        const blog = await page
+        const blog = page
           .getByRole('listitem')
           .filter({ hasText: 'The Playwright Blog' })
 
         await blog.getByRole('button', { name: /show/i }).click()
         await blog.getByRole('button', { name: /like/i }).click()
 
-        expect(blog.getByText(/likes: 0/i)).toBeVisible()
+        await expect(blog.getByText(/likes: 1/i)).toBeVisible()
       })
 
       test('a newly created blog can be deleted', async ({ page }) => {
-        await createBlog(
-          page,
-          'The Playwright Blog',
-          'Playwright Creator',
-          'http://playwright.dev/',
-        )
-
         const blog = page
           .getByRole('listitem')
           .filter({ hasText: 'The Playwright Blog' })
@@ -94,7 +80,43 @@ test.describe('Blog app', () => {
           page.getByText(/Removed blog: The Playwright Blog/i),
         ).toBeVisible()
 
-        await expect(blog).not.toBeVisible()
+        await expect(blog).toHaveCount(0)
+      })
+
+      test('only user who added the blog sees delete button', async ({
+        page,
+        request,
+      }) => {
+        let blog = page
+          .getByRole('listitem')
+          .filter({ hasText: 'The Playwright Blog' })
+
+        await blog.getByRole('button', { name: /show/i }).click()
+        await expect(
+          blog.getByRole('button', { name: /remove/i }),
+        ).toBeVisible()
+
+        await request.post('http://localhost:3001/api/users', {
+          data: {
+            name: 'Kamil Koby',
+            username: 'okamilo',
+            password: 'pingi125',
+          },
+        })
+
+        await page.getByRole('button', { name: /log out/i }).click()
+
+        await loginWith(page, 'okamilo', 'pingi125')
+
+        blog = page
+          .getByRole('listitem')
+          .filter({ hasText: 'The Playwright Blog' })
+
+        await expect(blog).toBeVisible()
+
+        await expect(blog.getByRole('button', { name: /remove/i })).toHaveCount(
+          0,
+        )
       })
     })
   })
