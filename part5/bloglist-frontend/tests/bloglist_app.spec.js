@@ -54,7 +54,23 @@ test.describe('Blog app', () => {
         await expect(page.getByText('Playwright Creator')).toBeVisible()
       })
 
-      // test('')
+      test('a newly created blog can be liked', async ({ page }) => {
+        await createBlog(
+          page,
+          'The Playwright Blog',
+          'Playwright Creator',
+          'http://playwright.dev/',
+        )
+
+        const blog = await page
+          .getByRole('listitem')
+          .filter({ hasText: 'The Playwright Blog' })
+
+        await blog.getByRole('button', { name: /show/i }).click()
+        await blog.getByRole('button', { name: /like/i }).click()
+
+        expect(blog.getByText(/likes: 0/i)).toBeVisible()
+      })
     })
   })
 })
