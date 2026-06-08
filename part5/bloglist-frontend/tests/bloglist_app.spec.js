@@ -118,6 +118,55 @@ test.describe('Blog app', () => {
           0,
         )
       })
+
+      test('blogs are sorted in descending likes order', async ({ page }) => {
+        await createBlog(
+          page,
+          'blogTwo',
+          'authorTwo',
+          'https://www.blogTwo.com',
+        )
+        await createBlog(
+          page,
+          'blogThree',
+          'authorThree',
+          'https://www.blogThree.com',
+        )
+
+        const blogOne = page
+          .getByRole('listitem')
+          .filter({ hasText: 'The Playwright Blog' })
+
+        const blogTwo = page
+          .getByRole('listitem')
+          .filter({ hasText: 'blogTwo' })
+
+        const blogThree = page
+          .getByRole('listitem')
+          .filter({ hasText: 'blogThree' })
+
+        await blogOne.getByRole('button', { name: /show/i }).click()
+        await blogTwo.getByRole('button', { name: /show/i }).click()
+        await blogThree.getByRole('button', { name: /show/i }).click()
+
+        await blogOne.getByRole('button', { name: /like/i }).click()
+        await expect(blogOne.getByText(/Likes: 1/i)).toBeVisible()
+
+        await blogOne.getByRole('button', { name: /like/i }).click()
+        await expect(blogOne.getByText(/Likes: 2/i)).toBeVisible()
+
+        await blogTwo.getByRole('button', { name: /like/i }).click()
+        await expect(blogTwo.getByText(/Likes: 1/i)).toBeVisible()
+
+        await expect(blogThree.getByText(/Likes: 0/i)).toBeVisible()
+
+        const blogs = page.getByRole('listitem')
+        await expect(blogs).toHaveCount(3)
+
+        await expect(blogs.nth(0)).toContainText(/The Playwright Blog/i)
+        await expect(blogs.nth(1)).toContainText(/BlogTwo/i)
+        await expect(blogs.nth(2)).toContainText(/BlogThree/i)
+      })
     })
   })
 })
