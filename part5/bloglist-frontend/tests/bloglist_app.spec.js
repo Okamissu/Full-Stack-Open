@@ -71,6 +71,31 @@ test.describe('Blog app', () => {
 
         expect(blog.getByText(/likes: 0/i)).toBeVisible()
       })
+
+      test('a newly created blog can be deleted', async ({ page }) => {
+        await createBlog(
+          page,
+          'The Playwright Blog',
+          'Playwright Creator',
+          'http://playwright.dev/',
+        )
+
+        const blog = page
+          .getByRole('listitem')
+          .filter({ hasText: 'The Playwright Blog' })
+
+        await blog.getByRole('button', { name: /show/i }).click()
+
+        page.on('dialog', (dialog) => dialog.accept())
+
+        await blog.getByRole('button', { name: /remove/i }).click()
+
+        await expect(
+          page.getByText(/Removed blog: The Playwright Blog/i),
+        ).toBeVisible()
+
+        await expect(blog).not.toBeVisible()
+      })
     })
   })
 })

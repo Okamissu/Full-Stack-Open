@@ -70,7 +70,7 @@ const App = () => {
 
       setNotification({
         type: 'info',
-        message: `Remove blog ${blog.title} by ${blog.author}`,
+        message: `Removed blog: ${blog.title} by ${blog.author}`,
       })
     } catch {
       setNotification({
