@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
@@ -6,7 +6,9 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
+import LogoutButton from './components/LogoutButton'
 import './index.css'
+import { Route, Routes, Link, useNavigate, Navigate } from 'react-router-dom'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -16,7 +18,7 @@ const App = () => {
     message: 'test',
   })
 
-  const blogFormRef = useRef()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -28,6 +30,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
+    if (!notification) return
+
     const timeout = setTimeout(() => {
       setNotification(null)
     }, 5000)
@@ -96,8 +100,6 @@ const App = () => {
         type: 'info',
         message: 'Blog added',
       })
-
-      blogFormRef.current.toggleVisibility()
     } catch {
       setNotification({
         type: 'error',
@@ -106,31 +108,72 @@ const App = () => {
     }
   }
 
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedBlogAppUser')
+    setUser(null)
+    setNotification({ type: 'info', message: 'Logged out' })
+    navigate('/')
+  }
+
   return (
     <main className="app">
       <h1>Blogs</h1>
       <Notification notification={notification} />
 
-      <LoginForm
-        user={user}
-        setUser={setUser}
-        setNotification={setNotification}
-      />
+      <nav className="nav">
+        <Link to="/">Blogs</Link>
+        {user && <Link to="/create">New blog</Link>}
+        {!user && <Link to="/login">Login</Link>}
+      </nav>
 
       {user && (
-        <Togglable buttonLabel="Create a new blog" ref={blogFormRef}>
-          <BlogForm createBlog={createBlog} />
-        </Togglable>
+        <div className="user-bar">
+          <LogoutButton handleLogout={handleLogout} />
+          <span>{user.name} logged in</span>
+        </div>
       )}
 
-      <BlogList
-        blogs={blogs}
-        setBlogs={setBlogs}
-        setNotification={setNotification}
-        handleLike={handleLike}
-        handleDelete={handleDelete}
-        user={user}
-      />
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            user ? (
+              <Navigate to="/" replace />
+            ) : (
+              <LoginForm
+                user={user}
+                setUser={setUser}
+                setNotification={setNotification}
+              />
+            )
+          }
+        />
+
+        <Route
+          path="/create"
+          element={
+            user ? (
+              <BlogForm createBlog={createBlog} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            <BlogList
+              blogs={blogs}
+              setBlogs={setBlogs}
+              setNotification={setNotification}
+              handleLike={handleLike}
+              handleDelete={handleDelete}
+              user={user}
+            />
+          }
+        />
+      </Routes>
     </main>
   )
 }
