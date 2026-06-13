@@ -83,6 +83,13 @@ input:focus {
   margin-bottom: 1.2rem;
 }
 
+a {
+  color: var(--primary);
+}
+
+a:visited {
+  color: var(--primary-dark);
+}
 .nav a {
   display: inline-flex;
   align-items: center;
@@ -177,13 +184,16 @@ ul {
   margin-bottom: 0.65rem;
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.2s ease;
+}
+
+.note p {
+  margin-block: 0;
+  flex-grow: 1;
 }
 
 .note:hover {
