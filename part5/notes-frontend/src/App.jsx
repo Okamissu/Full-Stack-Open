@@ -133,9 +133,7 @@ const App = () => {
             path="/create"
             element={
               user ? (
-                <Togglable buttonLabel="New note" ref={noteFormRef}>
-                  <NoteForm createNote={createNote} />
-                </Togglable>
+                <NoteForm createNote={createNote} />
               ) : (
                 <Navigate replace to="/login" />
               )

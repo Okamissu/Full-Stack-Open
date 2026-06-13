@@ -168,6 +168,11 @@ form {
   box-shadow: var(--shadow);
 }
 
+form h2 {
+  margin-block: 0.25em;
+  color: var(--primary);
+}
+
 ul {
   list-style: none;
   padding: 0;
