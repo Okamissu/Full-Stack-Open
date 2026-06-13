@@ -4,7 +4,7 @@ const Note = ({ notes, toggleImportance, deleteNote }) => {
   const id = useParams().id
   const navigate = useNavigate()
   const note = notes.find((n) => n.id === id)
-  const label = note.important ? 'set not important' : 'set important'
+  const label = note.important ? 'Set not important' : 'Set important'
 
   const handleDelete = () => {
     if (window.confirm(`Delete note ${note.content}`)) {
