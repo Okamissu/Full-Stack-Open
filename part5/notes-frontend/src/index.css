@@ -133,7 +133,7 @@ button {
   color: var(--primary);
   border: 1px solid var(--border);
   padding: 0.5rem 1.15rem;
-  wdith: fit-content;
+  width: fit-content;
   font-size: 1rem;
   font-weight: 500;
   border-radius: var(--radius);
