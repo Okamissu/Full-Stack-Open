@@ -6,17 +6,19 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
   const canDelete = user && blog.user && blog.user.id === user.id
 
   return (
-    <li>
-      <p>
-        <b>{blog.title}</b> - {blog.author}
-      </p>
+    <li className="blog">
+      <div className="preview">
+        <p>
+          <b>{blog.title}</b> - {blog.author}
+        </p>
 
-      <button onClick={() => setVisible((prev) => !prev)}>
-        {visible ? 'Hide' : 'Show'}
-      </button>
+        <button onClick={() => setVisible((prev) => !prev)}>
+          {visible ? 'Hide' : 'Show'}
+        </button>
+      </div>
 
       {visible && (
-        <div>
+        <div className="details">
           <a href={blog.url}>{blog.url}</a>
           <p>Likes: {blog.likes}</p>
           <p>Added by: {blog.user.username}</p>

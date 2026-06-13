@@ -107,7 +107,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <main className="app">
       <h1>Blogs</h1>
       <Notification notification={notification} />
 
@@ -131,7 +131,7 @@ const App = () => {
         handleDelete={handleDelete}
         user={user}
       />
-    </>
+    </main>
   )
 }
 export default App
