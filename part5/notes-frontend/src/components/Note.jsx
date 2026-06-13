@@ -1,10 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom'
 
-const Note = ({ notes, toggleImportance, deleteNote }) => {
+const Note = ({ note, toggleImportance, deleteNote }) => {
   const id = useParams().id
   const navigate = useNavigate()
-  const note = notes.find((n) => n.id === id)
-  const label = note.important ? 'Set not important' : 'Set important'
+
+  if (!note) {
+    return null
+  }
 
   const handleDelete = () => {
     if (window.confirm(`Delete note ${note.content}`)) {
@@ -12,6 +14,8 @@ const Note = ({ notes, toggleImportance, deleteNote }) => {
       navigate('/notes')
     }
   }
+
+  const label = note.important ? 'Set not important' : 'Set important'
 
   return (
     <li className="note">

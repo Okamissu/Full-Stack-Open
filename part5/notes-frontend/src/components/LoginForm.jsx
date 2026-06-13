@@ -27,7 +27,7 @@ const LoginForm = ({ setUser, setErrorMessage }) => {
 
   return (
     <form onSubmit={handleLogin}>
-      <h2>Login</h2>
+      <h2>Log into your account</h2>
       <div>
         <label htmlFor="username">Username</label>
         <input
