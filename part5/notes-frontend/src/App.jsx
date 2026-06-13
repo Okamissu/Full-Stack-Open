@@ -16,6 +16,7 @@ import NoteList from './components/NoteList'
 import Togglable from './components/Togglable'
 import LogoutButton from './components/LogoutButton.jsx'
 import Home from './components/Home'
+import Note from './components/Note.jsx'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
@@ -35,10 +36,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    noteService.getAll().then((initialNotes) => {
-      setNotes(initialNotes)
-    })
-  }, [])
+    noteService.getAll().then((response) => setNotes(response || []))
+  }, [setNotes])
 
   const createNote = (noteObject) => {
     noteService.create(noteObject).then((returnedNote) => {
@@ -48,6 +47,32 @@ const App = () => {
         noteFormRef.current.toggleVisibility()
       }
     })
+  }
+
+  const deleteNote = (id) => {
+    noteService.remove(id).then(() => {
+      setNotes(notes.filter((n) => n.id !== id))
+    })
+  }
+
+  const toggleImportanceOf = (id) => {
+    const note = notes.find((n) => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+
+    noteService
+      .update(id, changedNote)
+      .then((response) =>
+        setNotes(notes.map((note) => (note.id === id ? response : note))),
+      )
+      .catch(() => {
+        setErrorMessage(
+          `Note '${note.content}' was already removed from server`,
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setNotes(notes.filter((n) => n.id !== id))
+      })
   }
 
   return (
@@ -74,13 +99,15 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
 
+          <Route path="/notes" element={<NoteList notes={notes} />} />
+
           <Route
-            path="/notes"
+            path="/notes/:id"
             element={
-              <NoteList
+              <Note
                 notes={notes}
-                setNotes={setNotes}
-                setErrorMessage={setErrorMessage}
+                toggleImportance={toggleImportanceOf}
+                deleteNote={deleteNote}
               />
             }
           />
