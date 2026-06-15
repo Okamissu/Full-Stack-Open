@@ -1,11 +1,12 @@
-import { screen, render } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import { renderWithRouter } from './test-utils'
 import userEvent from '@testing-library/user-event'
 import BlogForm from '../../src/components/BlogForm'
 
 describe('<BlogForm />', () => {
   test('Submit handler gets called with right details', async () => {
     const mockHandler = vi.fn()
-    render(<BlogForm createBlog={mockHandler} />)
+    renderWithRouter(<BlogForm createBlog={mockHandler} />)
 
     const user = userEvent.setup()
 

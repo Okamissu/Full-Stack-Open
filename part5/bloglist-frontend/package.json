@@ -8,10 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest run",
-    "test:unit": "vitest run",
-    "test:e2e": "playwright test",
-    "test:e2e:chromium": "playwright test --project=chromium",
+    "test": "echo 'Running component tests...' && vitest run && echo 'Component tests passed. Running E2E tests...' && playwright test --project=chromium",
+    "test:component": "vitest run",
+    "test:e2e": "playwright test --project=chromium",
+    "test:e2e:full": "playwright test",
     "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
