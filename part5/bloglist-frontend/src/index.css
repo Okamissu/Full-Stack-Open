@@ -200,6 +200,27 @@ ul {
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.2s ease;
+  width: fit-content;
+}
+
+.blog.details {
+  width: initial;
+}
+
+.blog.details h3 {
+  color: var(--primary);
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+.blog a {
+  text-decoration: none;
+  color: var(--text);
+  transition: color 0.2s ease;
+}
+
+.blog a:hover {
+  color: var(--primary);
 }
 
 .blog .preview {
@@ -214,6 +235,31 @@ ul {
 .blog .details {
   display: flex;
   flex-direction: column;
+}
+
+.blog .details .label {
+  font-weight: bold;
+}
+
+.blog .details p,
+.blog .details a {
+  margin-block: 0.1rem 0.5rem;
+}
+
+.blog .details a {
+  text-decoration: underline;
+  color: var(--primary);
+  transition: color 0.2s ease;
+}
+
+.blog .details a:hover {
+  color: var(--primary-dark);
+}
+
+.blog .details .buttons {
+  margin-block: 0.5rem 0.1rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .blog:hover {

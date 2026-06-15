@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
@@ -8,7 +9,14 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import LogoutButton from './components/LogoutButton'
 import './index.css'
-import { Route, Routes, Link, useNavigate, Navigate } from 'react-router-dom'
+import {
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+  Navigate,
+  useMatch,
+} from 'react-router-dom'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -115,6 +123,9 @@ const App = () => {
     navigate('/')
   }
 
+  const match = useMatch('/blogs/:id')
+  const blog = match ? blogs.find((blog) => blog.id === match.params.id) : null
+
   return (
     <main className="app">
       <h1>Blogs</h1>
@@ -162,11 +173,15 @@ const App = () => {
 
         <Route
           path="/"
+          element={<BlogList blogs={blogs} setBlogs={setBlogs} />}
+        />
+        <Route path="/blogs" element={<Navigate to="/" />}></Route>
+
+        <Route
+          path="/blogs/:id"
           element={
-            <BlogList
-              blogs={blogs}
-              setBlogs={setBlogs}
-              setNotification={setNotification}
+            <BlogDetails
+              blog={blog}
               handleLike={handleLike}
               handleDelete={handleDelete}
               user={user}
