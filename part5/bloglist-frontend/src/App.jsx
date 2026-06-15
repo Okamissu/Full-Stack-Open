@@ -84,6 +84,8 @@ const App = () => {
         type: 'info',
         message: `Removed blog: ${blog.title} by ${blog.author}`,
       })
+
+      navigate('/')
     } catch {
       setNotification({
         type: 'error',

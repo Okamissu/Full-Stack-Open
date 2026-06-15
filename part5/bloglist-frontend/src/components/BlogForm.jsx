@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({
@@ -6,6 +7,8 @@ const BlogForm = ({ createBlog }) => {
     author: '',
     url: '',
   })
+
+  const navigate = useNavigate()
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -26,13 +29,14 @@ const BlogForm = ({ createBlog }) => {
       author: '',
       url: '',
     })
+
+    navigate('/')
   }
 
   return (
     <>
-      <h2>Create a new blog</h2>
-
       <form onSubmit={handleSubmit}>
+        <h2>Create a new blog</h2>
         <label>
           Title:
           <input
