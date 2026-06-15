@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Blog from './Blog'
+import Blog from '../../src/components/Blog'
 
 describe('<Blog />', () => {
   const blog = {

@@ -17,7 +17,7 @@ export default defineConfig({
     globals: true,
     setupFiles: './testSetup.js',
     coverage: {
-      include: ['src/**/*.{js,jsx}'],
+      include: ['tests/**/*.{js,jsx}'],
     },
   },
 })
