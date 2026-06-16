@@ -52,7 +52,7 @@ const LoginForm = ({ setUser, setNotification }) => {
           />
         </label>
       </div>
-      <button type="submit">Login</button>
+      <button type="submit">Log in</button>
     </form>
   )
 }
