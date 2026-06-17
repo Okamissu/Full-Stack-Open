@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Form, Input, Button, Label } from '../styles'
 
 const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({
@@ -35,43 +36,43 @@ const BlogForm = ({ createBlog }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <h2>Create a new blog</h2>
-        <label>
+        <Label>
           Title:
-          <input
+          <Input
             name="title"
             type="text"
             placeholder="A blog title..."
             value={newBlog.title}
             onChange={handleChange}
           />
-        </label>
+        </Label>
 
-        <label>
+        <Label>
           Author:
-          <input
+          <Input
             name="author"
             type="text"
             placeholder="Blog author"
             value={newBlog.author}
             onChange={handleChange}
           />
-        </label>
+        </Label>
 
-        <label>
+        <Label>
           URL:
-          <input
+          <Input
             name="url"
             type="url"
             placeholder="https://www.example.com"
             value={newBlog.url}
             onChange={handleChange}
           />
-        </label>
+        </Label>
 
-        <button type="submit">Create</button>
-      </form>
+        <Button type="submit">Create</Button>
+      </Form>
     </>
   )
 }

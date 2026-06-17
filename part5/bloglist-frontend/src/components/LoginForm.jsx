@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
+import { Form, Input, Button, Label } from '../styles'
 
 const LoginForm = ({ setUser, setNotification }) => {
   const [username, setUsername] = useState('')
@@ -24,12 +25,12 @@ const LoginForm = ({ setUser, setNotification }) => {
   }
 
   return (
-    <form onSubmit={handleLogin}>
+    <Form onSubmit={handleLogin}>
       <h2>Login</h2>
       <div>
-        <label htmlFor="username">
+        <Label htmlFor="username">
           Username
-          <input
+          <Input
             type="text"
             value={username}
             id="username"
@@ -37,12 +38,12 @@ const LoginForm = ({ setUser, setNotification }) => {
               setUsername(target.value)
             }}
           />
-        </label>
+        </Label>
       </div>
       <div>
-        <label htmlFor="password">
+        <Label htmlFor="password">
           Password
-          <input
+          <Input
             type="password"
             value={password}
             id="password"
@@ -50,10 +51,10 @@ const LoginForm = ({ setUser, setNotification }) => {
               setPassword(target.value)
             }}
           />
-        </label>
+        </Label>
       </div>
-      <button type="submit">Log in</button>
-    </form>
+      <Button type="submit">Log in</Button>
+    </Form>
   )
 }
 

@@ -51,7 +51,22 @@ h2 {
   margin-top: 2rem;
 }
 
-label {
+footer {
+  color: var(--muted);
+  margin-top: 3rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .app {
+    width: min(100% - 1rem, 1120px);
+    padding-block: 1rem;
+  }
+}
+
+/* ############ */
+
+/* label {
   display: block;
   margin-top: 0.75rem;
   font-weight: 600;
@@ -296,19 +311,6 @@ ul {
   width: fit-content;
 }
 
-footer {
-  color: var(--muted);
-  margin-top: 3rem;
-  font-size: 0.9rem;
-}
-
-@media (max-width: 640px) {
-  .app {
-    width: min(100% - 1rem, 1120px);
-    padding-block: 1rem;
-  }
-}
-
 .notification {
   font-size: 1rem;
   border-radius: var(--radius);
@@ -328,4 +330,4 @@ footer {
   color: var(--info);
   background: var(--info-bg);
   border: 1px solid var(--info-border);
-}
+} */
