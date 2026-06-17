@@ -13,7 +13,6 @@ const BlogList = ({ blogs, setBlogs }) => {
 
   return (
     <>
-      <h2>Bloglist</h2>
       <ul>
         {sortedBlogs.map((blog) => (
           <Blog key={blog.id} blog={blog} />

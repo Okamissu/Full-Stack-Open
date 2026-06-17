@@ -1,14 +1,15 @@
-import { Link } from 'react-router-dom'
+import { BlogCard, BlogLink } from '../styles'
 
 const Blog = ({ blog }) => {
   return (
-    <li className="blog">
-      <div className="preview">
-        <Link to={`/blogs/${blog.id}`}>
+    <li>
+      <BlogCard>
+        <BlogLink to={`/blogs/${blog.id}`}>
           <b>{blog.title}</b> - {blog.author}
-        </Link>
-      </div>
+        </BlogLink>
+      </BlogCard>
     </li>
   )
 }
+
 export default Blog

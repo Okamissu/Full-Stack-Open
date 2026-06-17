@@ -3,10 +3,10 @@ import { NotificationBox } from '../styles'
 const Notification = ({ notification }) => {
   if (!notification) return null
 
-  const isError = notification.type === 'error'
-
   return (
-    <NotificationBox error={isError}>{notification.message}</NotificationBox>
+    <NotificationBox $error={notification.type === 'error'}>
+      {notification.message}
+    </NotificationBox>
   )
 }
 

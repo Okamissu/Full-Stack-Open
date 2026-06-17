@@ -1,39 +1,43 @@
+import { BlogCard, BlogTitle, BlogButtons, BlogButton } from '../styles'
+
 const BlogDetails = ({ blog, handleLike, handleDelete, user }) => {
-  if (!blog) {
-    return null
-  }
+  if (!blog) return null
 
   const canDelete = user && blog.user && blog.user.id === user.id
 
   return (
-    <div className="blog details">
-      <div className="preview">
-        <h3>{blog.title}</h3>
-      </div>
+    <BlogCard>
+      <BlogTitle>{blog.title}</BlogTitle>
 
-      <div className="details">
-        <p>
-          <span className="label">Author:</span> {blog.author}
-        </p>
-        <p>
-          <span className="label">Likes:</span> {blog.likes}
-        </p>
-        <p>
-          <span className="label">Added by:</span> {blog.user.username}
-        </p>
-        <p>
-          <span className="label">URL:</span> <a href={blog.url}>{blog.url}</a>
-        </p>
-        {!!user && (
-          <div className="buttons">
-            <button onClick={() => handleLike(blog)}>💜 Like</button>
-            {canDelete && (
-              <button onClick={() => handleDelete(blog)}>🗑️ Remove</button>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
+      <p>
+        <strong>Author:</strong> {blog.author}
+      </p>
+
+      <p>
+        <strong>Likes:</strong> {blog.likes}
+      </p>
+
+      <p>
+        <strong>Added by:</strong> {blog.user.username}
+      </p>
+
+      <p>
+        <strong>URL:</strong> <a href={blog.url}>{blog.url}</a>
+      </p>
+
+      {!!user && (
+        <BlogButtons>
+          <BlogButton onClick={() => handleLike(blog)}>💜 Like</BlogButton>
+
+          {canDelete && (
+            <BlogButton onClick={() => handleDelete(blog)}>
+              🗑️ Remove
+            </BlogButton>
+          )}
+        </BlogButtons>
+      )}
+    </BlogCard>
   )
 }
+
 export default BlogDetails
