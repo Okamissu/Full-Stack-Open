@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, Link, Navigate, useMatch } from 'react-router-dom'
-import styled from 'styled-components'
 
 import noteService from './services/notes'
 import Notification from './components/Notification'
-// import Footer from './components/Footer'
+import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import NoteForm from './components/NoteForm'
 import NoteList from './components/NoteList'
@@ -12,22 +11,6 @@ import Togglable from './components/Togglable'
 import LogoutButton from './components/LogoutButton.jsx'
 import Home from './components/Home'
 import Note from './components/Note.jsx'
-
-const Page = styled.div`
-  padding: 1em;
-  background: papayawhip;
-`
-
-const Navigation = styled.div`
-  background: BurlyWood;
-  padding: 1em;
-`
-
-const Footer = styled.div`
-  background: Chocolate;
-  padding: 1em;
-  margin-top: 1em;
-`
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
@@ -90,17 +73,17 @@ const App = () => {
   const note = match ? notes.find((note) => note.id === match.params.id) : null
 
   return (
-    <Page>
+    <main className="app">
       <h1>Notes</h1>
 
       <Notification message={errorMessage} />
 
-      <Navigation>
+      <nav className="nav">
         <Link to="/">Home</Link>
         <Link to="/notes">Notes</Link>
         {user && <Link to="/create">New note</Link>}
         {!user && <Link to="/login">Login</Link>}
-      </Navigation>
+      </nav>
 
       {user && (
         <div className="user-bar">
@@ -152,10 +135,8 @@ const App = () => {
         />
       </Routes>
 
-      <Footer>
-        Note app, Department of Computer Science, University of Helsinki 2026
-      </Footer>
-    </Page>
+      <Footer />
+    </main>
   )
 }
 
