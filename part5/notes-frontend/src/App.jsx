@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, Link, Navigate, useMatch } from 'react-router-dom'
+import { Container } from '@mui/material'
 
 import noteService from './services/notes'
 import Notification from './components/Notification'
@@ -73,7 +74,7 @@ const App = () => {
   const note = match ? notes.find((note) => note.id === match.params.id) : null
 
   return (
-    <main className="app">
+    <Container>
       <h1>Notes</h1>
 
       <Notification message={errorMessage} />
@@ -136,7 +137,7 @@ const App = () => {
       </Routes>
 
       <Footer />
-    </main>
+    </Container>
   )
 }
 
