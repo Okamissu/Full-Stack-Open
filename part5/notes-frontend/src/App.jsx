@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route, Link, Navigate, useMatch } from 'react-router-dom'
-import { Container } from '@mui/material'
+import { Container, AppBar, Toolbar, Button } from '@mui/material'
 
 import noteService from './services/notes'
 import Notification from './components/Notification'
@@ -14,11 +14,9 @@ import Home from './components/Home'
 import Note from './components/Note.jsx'
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
   const [notes, setNotes] = useState([])
   const [user, setUser] = useState(null)
-
-  const noteFormRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
@@ -38,9 +36,13 @@ const App = () => {
     noteService.create(noteObject).then((returnedNote) => {
       setNotes((prevNotes) => [...prevNotes, returnedNote])
 
-      if (noteFormRef.current) {
-        noteFormRef.current.toggleVisibility()
-      }
+      setNotification({
+        text: `Note '${returnedNote.content}' added!`,
+        type: 'success',
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     })
   }
 
@@ -60,11 +62,12 @@ const App = () => {
         setNotes(notes.map((note) => (note.id === id ? response : note))),
       )
       .catch(() => {
-        setErrorMessage(
-          `Note '${note.content}' was already removed from server`,
-        )
+        setNotification({
+          text: `Note '${note.content}' was already removed from server`,
+          type: 'error',
+        })
         setTimeout(() => {
-          setErrorMessage(null)
+          setNotification(null)
         }, 5000)
         setNotes(notes.filter((n) => n.id !== id))
       })
@@ -73,18 +76,33 @@ const App = () => {
   const match = useMatch('/notes/:id')
   const note = match ? notes.find((note) => note.id === match.params.id) : null
 
+  const style = { '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' } }
+
   return (
     <Container>
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" component={Link} to="" sx={style}>
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="/notes" sx={style}>
+            Notes
+          </Button>
+          {user && (
+            <Button color="inherit" component={Link} to="/create" sx={style}>
+              New note
+            </Button>
+          )}
+          {!user && (
+            <Button color="inherit" component={Link} to="/login" sx={style}>
+              Login
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      <Notification notification={notification} />
       <h1>Notes</h1>
-
-      <Notification message={errorMessage} />
-
-      <nav className="nav">
-        <Link to="/">Home</Link>
-        <Link to="/notes">Notes</Link>
-        {user && <Link to="/create">New note</Link>}
-        {!user && <Link to="/login">Login</Link>}
-      </nav>
 
       {user && (
         <div className="user-bar">
@@ -118,7 +136,7 @@ const App = () => {
               <LoginForm
                 user={user}
                 setUser={setUser}
-                setErrorMessage={setErrorMessage}
+                setNotification={setNotification}
               />
             )
           }
