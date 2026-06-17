@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 export const Form = styled.form`
   max-width: 460px;
@@ -48,4 +49,57 @@ export const Label = styled.label`
   margin-top: 0.75rem;
   font-weight: 600;
   color: var(--text);
+`
+
+export const Nav = styled.nav`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 0.6rem;
+  gap: 0.6rem;
+  margin: 0;
+  margin-bottom: 1.2rem;
+  background-color: var(--primary);
+`
+
+export const NavLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: white;
+  min-height: 2.4rem;
+  padding: 0.4rem 1.1rem;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--primary-dark);
+  }
+`
+
+export const NavButton = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: white;
+  min-height: 2.4rem;
+  padding: 0.4rem 1.1rem;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--primary-dark);
+  }
+`
+
+export const NotificationBox = styled.div`
+  color: ${({ error }) => (error ? 'var(--danger)' : 'green')};
+
+  background: ${({ error }) => (error ? 'var(--danger-bg)' : '#ecfdf5')};
+
+  border: 1px solid
+    ${({ error }) => (error ? 'var(--danger-border)' : '#86efac')};
+
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
 `

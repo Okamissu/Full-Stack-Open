@@ -17,7 +17,7 @@
   --info-bg: #c2dbff;
   --info-border: #9ec6ff;
 
-  --radius: 10px;
+  --radius: 0px;
   --shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
 }
 
@@ -36,19 +36,16 @@ body {
 .app {
   width: min(1120px, calc(100% - 2rem));
   margin: 0 auto;
-  padding-block: 2rem;
 }
 
 h1 {
-  color: var(--primary);
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.1;
-  margin: 0 0 1.5rem;
-  letter-spacing: -0.04em;
+  color: var(--primary-light);
+  font-size: clamp(1rem, 3vw, 2rem);
+  margin: 0.5rem auto 0.5rem 0.5rem;
 }
 
 h2 {
-  margin-top: 2rem;
+  margin-top: 0.25rem;
 }
 
 footer {

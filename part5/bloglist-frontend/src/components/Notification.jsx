@@ -1,9 +1,13 @@
+import { NotificationBox } from '../styles'
+
 const Notification = ({ notification }) => {
-  if (notification === null) return null
+  if (!notification) return null
 
-  const notificationClass = `notification ${notification.type}`
+  const isError = notification.type === 'error'
 
-  return <p className={notificationClass}>{notification.message}</p>
+  return (
+    <NotificationBox error={isError}>{notification.message}</NotificationBox>
+  )
 }
 
 export default Notification
