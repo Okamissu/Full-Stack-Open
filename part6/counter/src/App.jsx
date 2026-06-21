@@ -1,22 +1,11 @@
-import { create } from 'zustand'
-
-const useCounterStore = create((set) => ({
-  counter: 0,
-  increment: () => set((state) => ({ counter: state.counter + 1 })),
-}))
+import Display from './Display'
+import Controls from './Controls'
 
 const App = () => {
-  const counter = useCounterStore((state) => state.counter)
-  const increment = useCounterStore((state) => state.increment)
-
   return (
-    <div>
-      <div>{counter}</div>
-      <div>
-        <button onClick={increment}>plus</button>
-        <button>minus</button>
-        <button>zero</button>
-      </div>
+    <div className="flex flex-col justify-center h-dvh">
+      <Display />
+      <Controls />
     </div>
   )
 }
