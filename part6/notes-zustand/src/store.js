@@ -10,6 +10,12 @@ const useNoteStore = create((set) => ({
   ],
   actions: {
     add: (note) => set((state) => ({ notes: [...state.notes, note] })),
+    toggleImportance: (id) =>
+      set((state) => ({
+        notes: state.notes.map((note) =>
+          note.id === id ? { ...note, important: !note.important } : note,
+        ),
+      })),
   },
 }))
 
