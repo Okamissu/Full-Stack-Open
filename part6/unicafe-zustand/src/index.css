@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900;
+  }
+  button {
+    @apply p-2 my-1 cursor-pointer rounded-md bg-gray-300 transition-all hover:brightness-90 shadow-sm;
+  }
+}
+
+@layer components {
+  .stat-label {
+    @apply px-4 py-1;
+  }
+
+  .stat-value {
+    @apply px-4 py-1 text-right;
+  }
+}
