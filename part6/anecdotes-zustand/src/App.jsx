@@ -1,12 +1,10 @@
-import { useAnecdotes } from './store'
+import { useAnecdoteActions, useAnecdotes } from './store'
 import './index.css'
 
 const App = () => {
   const anecdotes = useAnecdotes()
 
-  const vote = (id) => {
-    console.log('vote', id)
-  }
+  const { vote } = useAnecdoteActions()
 
   return (
     <div>
