@@ -13,12 +13,22 @@ const useNoteStore = create((set) => ({
       const newNote = await noteService.createNew(content)
       set((state) => ({ notes: [...state.notes, newNote] }))
     },
-    toggleImportance: (id) =>
-      set((state) => ({
-        notes: state.notes.map((note) =>
-          note.id === id ? { ...note, important: !note.important } : note,
-        ),
-      })),
+    toggleImportance: async (id) => {
+      try {
+        const note = useNoteStore.getState().notes.find((n) => n.id === id)
+
+        const updated = await noteService.update(id, {
+          ...note,
+          important: !note.important,
+        })
+
+        set((state) => ({
+          notes: state.notes.map((n) => (n.id === id ? updated : n)),
+        }))
+      } catch (error) {
+        console.error(error)
+      }
+    },
     setFilter: (value) => set(() => ({ filter: value })),
   },
 }))

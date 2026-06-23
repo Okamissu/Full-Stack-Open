@@ -3,7 +3,7 @@
     {
       "id": "1",
       "content": "Zustand is less complex than Redux",
-      "important": true
+      "important": false
     },
     {
       "id": "2",
@@ -27,7 +27,7 @@
     },
     {
       "content": "Testing is very important",
-      "important": false,
+      "important": true,
       "id": "jergCht96p0"
     }
   ],
