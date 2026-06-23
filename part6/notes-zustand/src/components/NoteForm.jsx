@@ -6,7 +6,7 @@ const NoteForm = () => {
   const addNote = async (event) => {
     event.preventDefault()
     const content = event.target.note.value
-    add(content)
+    await add(content)
     event.target.reset()
   }
 
