@@ -8,22 +8,25 @@ const VisibilityFilter = () => {
       <input
         type="radio"
         name="filter"
+        id="filter-all"
         onChange={() => setFilter('all')}
         defaultChecked
       />
-      All
+      <label htmlFor="filter-all">All</label>
       <input
         type="radio"
         name="filter"
+        id="filter-important"
         onChange={() => setFilter('important')}
       />
-      Important
+      <label htmlFor="filter-important">Important</label>
       <input
         type="radio"
         name="filter"
+        id="filter-notimportant"
         onChange={() => setFilter('nonimportant')}
       />
-      Not important
+      <label htmlFor="filter-notimportant">Not important</label>
     </div>
   )
 }
