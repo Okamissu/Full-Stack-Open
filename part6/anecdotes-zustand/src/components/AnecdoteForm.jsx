@@ -10,12 +10,17 @@ const AnecdoteForm = () => {
   }
 
   return (
-    <form className="card" onSubmit={addAnecdote}>
-      <h2>Create new</h2>
-      <div>
-        <input type="text" name="anecdote" />
+    <form className="card space-y-3" onSubmit={addAnecdote}>
+      <h2>Create a new anecdote</h2>
+      <div className="flex">
+        <input
+          type="text"
+          name="anecdote"
+          placeholder="Anecdote content..."
+          className="rounded-r-none"
+        />
+        <button className="rounded-l-none">Create</button>
       </div>
-      <button>Create</button>
     </form>
   )
 }
