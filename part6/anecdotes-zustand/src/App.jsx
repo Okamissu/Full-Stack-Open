@@ -4,7 +4,13 @@ import './index.css'
 const App = () => {
   const anecdotes = useAnecdotes()
 
-  const { vote } = useAnecdoteActions()
+  const { vote, add } = useAnecdoteActions()
+
+  const addAnecdote = (event) => {
+    event.preventDefault()
+    add(event.target.anecdote.value)
+    event.target.reset()
+  }
 
   return (
     <div>
@@ -18,10 +24,10 @@ const App = () => {
           </div>
         </div>
       ))}
-      <form className="card">
+      <form className="card" onSubmit={addAnecdote}>
         <h2>Create new</h2>
         <div>
-          <input type="text" />
+          <input type="text" name="anecdote" />
         </div>
         <button>Create</button>
       </form>
