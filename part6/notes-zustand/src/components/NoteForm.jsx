@@ -1,5 +1,4 @@
 import { useNoteActions } from '../store'
-import noteService from '../services/notes'
 
 const NoteForm = () => {
   const { add } = useNoteActions()
@@ -7,9 +6,7 @@ const NoteForm = () => {
   const addNote = async (event) => {
     event.preventDefault()
     const content = event.target.note.value
-    const newNote = await noteService.createNew(content)
-
-    add(newNote)
+    add(content)
     event.target.reset()
   }
 

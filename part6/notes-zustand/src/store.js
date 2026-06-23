@@ -1,11 +1,18 @@
 import { create } from 'zustand'
+import noteService from './services/notes'
 
 const useNoteStore = create((set) => ({
   notes: [],
   filter: 'all',
   actions: {
-    initialize: (notes) => set(() => ({ notes })),
-    add: (note) => set((state) => ({ notes: [...state.notes, note] })),
+    initialize: async () => {
+      const notes = await noteService.getAll()
+      set(() => ({ notes }))
+    },
+    add: async (content) => {
+      const newNote = await noteService.createNew(content)
+      set((state) => ({ notes: [...state.notes, newNote] }))
+    },
     toggleImportance: (id) =>
       set((state) => ({
         notes: state.notes.map((note) =>

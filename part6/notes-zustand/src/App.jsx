@@ -3,13 +3,12 @@ import NoteList from './components/NoteList'
 import VisibilityFilter from './components/VisibilityFilter'
 import { useEffect } from 'react'
 import { useNoteActions } from './store'
-import noteService from './services/notes'
 
 const App = () => {
   const { initialize } = useNoteActions()
 
   useEffect(() => {
-    noteService.getAll().then((notes) => initialize(notes))
+    initialize()
   }, [initialize])
 
   return (
