@@ -1,5 +1,6 @@
 import NoteForm from './components/NoteForm'
 import NoteList from './components/NoteList'
+import VisibilityFilter from './components/VisibilityFilter'
 
 const App = () => {
   return (
@@ -7,6 +8,7 @@ const App = () => {
       <div className="max-w-4xl mx-auto p-6 text-slate-900 space-y-4">
         <h1 className="text-3xl font-bold">Notes</h1>
         <NoteForm />
+        <VisibilityFilter />
         <NoteList />
       </div>
     </div>
