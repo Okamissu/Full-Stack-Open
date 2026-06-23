@@ -37,7 +37,7 @@ const update = async (id, note) => {
     throw new Error('Failed to update note')
   }
 
-  return response.json()
+  return await response.json()
 }
 
 export default { getAll, createNew, update }
