@@ -20,6 +20,5 @@
       "important": false,
       "id": "agOXO7nchg4"
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }
