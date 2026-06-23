@@ -1,19 +1,25 @@
 {
   "notes": [
     {
-      "id": 1,
+      "id": "1",
       "content": "Zustand is less complex than Redux",
       "important": true
     },
     {
-      "id": 2,
+      "id": "2",
       "content": "React app benefits from custom hooks",
       "important": false
     },
     {
-      "id": 3,
+      "id": "3",
       "content": "Remember to sleep well",
       "important": true
+    },
+    {
+      "content": "Leia is a cute doggie",
+      "important": false,
+      "id": "agOXO7nchg4"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
