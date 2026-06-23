@@ -1,31 +1,31 @@
-
 import { useAnecdotes } from './store'
+import './index.css'
 
 const App = () => {
   const anecdotes = useAnecdotes()
 
-  const vote = id => {
+  const vote = (id) => {
     console.log('vote', id)
   }
 
   return (
     <div>
-      <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote => (
-        <div key={anecdote.id}>
+      <h1>Anecdotes</h1>
+      {anecdotes.map((anecdote) => (
+        <div className="card" key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div>
-            has {anecdote.votes}
             <button onClick={() => vote(anecdote.id)}>vote</button>
+            {anecdote.votes} votes
           </div>
         </div>
       ))}
-      <h2>create new</h2>
-      <form>
+      <form className="card">
+        <h2>Create new</h2>
         <div>
-          <input />
+          <input type="text" />
         </div>
-        <button>create</button>
+        <button>Create</button>
       </form>
     </div>
   )
