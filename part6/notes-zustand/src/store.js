@@ -1,20 +1,9 @@
 import { create } from 'zustand'
 import noteService from './services/notes'
-
-const logger = (config) => (set, get, api) => {
-  return config(
-    (...args) => {
-      console.log('prev state', get())
-      set(...args)
-      console.log('next state', get())
-    },
-    get,
-    api,
-  )
-}
+import { devtools } from 'zustand/middleware'
 
 const useNoteStore = create(
-  logger((set, get) => ({
+  devtools((set, get) => ({
     notes: [],
     filter: '',
     actions: {

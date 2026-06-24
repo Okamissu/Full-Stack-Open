@@ -3,12 +3,12 @@
     {
       "id": "1",
       "content": "Zustand is less complex than Redux",
-      "important": true
+      "important": false
     },
     {
       "id": "2",
       "content": "React app benefits from custom hooks",
-      "important": false
+      "important": true
     },
     {
       "id": "3",
@@ -39,6 +39,11 @@
       "content": "Warszawa jest podejrzana",
       "important": true,
       "id": "Y0ZK_1VTydg"
+    },
+    {
+      "content": "When the Redux DevTools extension is installed in the browser, the state of the store and its changes can be inspected in the browser's developer tools",
+      "important": true,
+      "id": "0M2PQfnr31o"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
