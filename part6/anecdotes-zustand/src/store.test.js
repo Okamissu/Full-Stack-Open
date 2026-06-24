@@ -1,4 +1,3 @@
-import { beforeEach, describe, test, expect, vi } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 
 vi.mock('./services/anecdotes', () => ({
@@ -19,26 +18,26 @@ beforeEach(() => {
 })
 
 describe('useAnecdoteActions', () => {
-  // Write a test that verifies the state is initialized with the anecdotes returned by the backend.
-  test('initialize loads sorted anecdotes from backend via getAll service method', async () => {
-    const mockAnecdotes = [
-      {
-        content: 'Testing 2',
-        votes: 2,
-        id: 'Dp1Ai7Y3676',
-      },
-      {
-        content: 'Testing 1',
-        votes: 1,
-        id: 'Dp1Ai7Y3578',
-      },
-      {
-        content: 'Testing 0',
-        votes: 0,
-        id: 'Dp1Ai7Y2137',
-      },
-    ]
+  const mockAnecdotes = [
+    {
+      content: 'Testing 2',
+      votes: 2,
+      id: 'Dp1Ai7Y3676',
+    },
+    {
+      content: 'Testing 0',
+      votes: 0,
+      id: 'Dp1Ai7Y2137',
+    },
+    {
+      content: 'Testing 1',
+      votes: 1,
+      id: 'Dp1Ai7Y3578',
+    },
+  ]
 
+  // Write a test that verifies the state is initialized with the anecdotes returned by the backend.
+  test('state is initialized with the anecdotes returned by the backend.', async () => {
     anecdoteService.getAll.mockResolvedValue(mockAnecdotes)
 
     const { result } = renderHook(() => useAnecdoteActions())
@@ -48,12 +47,9 @@ describe('useAnecdoteActions', () => {
     })
 
     const { result: anecdotesResult } = renderHook(() => useAnecdotes())
-    expect(anecdotesResult.current).toEqual(mockAnecdotes)
+    expect(anecdotesResult.current).toEqual(
+      expect.arrayContaining(mockAnecdotes),
+    )
+    expect(anecdotesResult.current).toHaveLength(mockAnecdotes.length)
   })
 })
-
-// Write a test that verifies the component displaying anecdotes receives the anecdotes from the store sorted by votes.
-
-// Write a test that verifies the correct React component receives a properly filtered list of anecdotes.
-
-// Write a test that verifies that voting increases the number of votes for an anecdote.
