@@ -2,7 +2,6 @@ import './index.css'
 import AnecdoteList from './components/AnecdoteList'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteFilter from './components/AnecdoteFilter'
-import anecdoteService from './services/anecdotes'
 import { useAnecdoteActions } from './store'
 import { useEffect } from 'react'
 import Notification from './components/Notification'
@@ -11,7 +10,7 @@ const App = () => {
   const { initialize } = useAnecdoteActions()
 
   useEffect(() => {
-    anecdoteService.getAll().then((anecdotes) => initialize(anecdotes))
+    initialize()
   }, [initialize])
 
   return (

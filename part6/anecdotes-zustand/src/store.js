@@ -7,10 +7,10 @@ const useAnecdoteStore = create((set, get) => ({
   anecdotes: [],
   filter: '',
   actions: {
-    initialize: (notes) =>
-      set(() => ({
-        anecdotes: sort(notes),
-      })),
+    initialize: async () => {
+      const anecdotes = await anecdoteService.getAll()
+      set(() => ({ anecdotes: sort(anecdotes) }))
+    },
     vote: async (id) => {
       try {
         const anecdote = get().anecdotes.find((a) => a.id === id)
@@ -111,3 +111,5 @@ export const useNotification = () =>
 
 export const useNotificationActions = () =>
   useNotificationStore((state) => state.actions)
+
+export default useAnecdoteStore
