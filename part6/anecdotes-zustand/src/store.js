@@ -1,9 +1,5 @@
 import { create } from 'zustand'
-
-const asObject = (anecdote) => ({
-  content: anecdote,
-  votes: 0,
-})
+import anecdoteService from './services/anecdotes'
 
 const sort = (anecdotes) => anecdotes.toSorted((a, b) => b.votes - a.votes)
 
@@ -25,10 +21,11 @@ const useAnecdoteStore = create((set) => ({
           ),
         ),
       })),
-    add: (content) =>
-      set((state) => ({
-        anecdotes: sort([...state.anecdotes, asObject(content)]),
-      })),
+    add: async (content) => {
+      const newAnecdote = await anecdoteService.create(content)
+      set((state) => ({ anecdotes: sort([...state.anecdotes, newAnecdote]) }))
+    },
+
     setFilter: (filter) =>
       set(() => ({
         filter,
