@@ -34,6 +34,11 @@
       "content": "W Krakowie pojawiły się kozy i owce, które gryzą trawniki",
       "important": true,
       "id": "sBOnI6SwLTc"
+    },
+    {
+      "content": "Warszawa jest podejrzana",
+      "important": true,
+      "id": "Y0ZK_1VTydg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
