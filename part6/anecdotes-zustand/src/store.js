@@ -3,7 +3,7 @@ import anecdoteService from './services/anecdotes'
 
 const sort = (anecdotes) => anecdotes.toSorted((a, b) => b.votes - a.votes)
 
-const useAnecdoteStore = create((set) => ({
+const useAnecdoteStore = create((set, get) => ({
   anecdotes: [],
   filter: '',
   actions: {
@@ -11,16 +11,24 @@ const useAnecdoteStore = create((set) => ({
       set(() => ({
         anecdotes: sort(notes),
       })),
-    vote: (id) =>
-      set((state) => ({
-        anecdotes: sort(
-          state.anecdotes.map((anecdote) =>
-            anecdote.id === id
-              ? { ...anecdote, votes: anecdote.votes + 1 }
-              : anecdote,
+    vote: async (id) => {
+      try {
+        const anecdote = get().anecdotes.find((a) => a.id === id)
+
+        const updated = await anecdoteService.update(id, {
+          ...anecdote,
+          votes: anecdote.votes + 1,
+        })
+
+        set((state) => ({
+          anecdotes: sort(
+            state.anecdotes.map((a) => (a.id === id ? updated : a)),
           ),
-        ),
-      })),
+        }))
+      } catch (error) {
+        console.error(error)
+      }
+    },
     add: async (content) => {
       const newAnecdote = await anecdoteService.create(content)
       set((state) => ({ anecdotes: sort([...state.anecdotes, newAnecdote]) }))
