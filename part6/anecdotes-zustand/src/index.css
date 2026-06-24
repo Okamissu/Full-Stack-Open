@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@source not '../db.json';
+
 @layer base {
   body {
     @apply bg-slate-100 text-slate-900;
