@@ -12,3 +12,5 @@ const useCounterStore = create((set) => ({
 export const useCounter = () => useCounterStore((state) => state.counter)
 export const useCounterControls = () =>
   useCounterStore((state) => state.actions)
+
+export default useCounterStore
