@@ -50,6 +50,27 @@ const useAnecdoteStore = create((set, get) => ({
           .actions.setNotification(`Error: "${error}"`)
       }
     },
+    remove: async (id) => {
+      try {
+        const anecdote = get().anecdotes.find((a) => a.id === id)
+        if (anecdote.votes > 0)
+          throw new Error('Only ancedotes with 0 votes can be removed')
+
+        await anecdoteService.remove(id)
+        set((state) => ({
+          anecdotes: state.anecdotes.filter((a) => a.id !== id),
+        }))
+
+        useNotificationStore
+          .getState()
+          .actions.setNotification(`Removed: "${anecdote.content}"`)
+      } catch (error) {
+        console.error(error)
+        useNotificationStore
+          .getState()
+          .actions.setNotification(`Error: "${error}"`)
+      }
+    },
     setFilter: (filter) =>
       set(() => ({
         filter,

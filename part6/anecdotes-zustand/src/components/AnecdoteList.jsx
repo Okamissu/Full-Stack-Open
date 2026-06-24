@@ -4,7 +4,7 @@ const AnecdoteList = () => {
   const anecdotes = useAnecdotes()
   const filter = useFilter()
 
-  const { vote } = useAnecdoteActions()
+  const { vote, remove } = useAnecdoteActions()
 
   const visibleAnecdotes = anecdotes.filter((anecdote) =>
     anecdote.content.toLowerCase().includes(filter.toLowerCase()),
@@ -21,7 +21,12 @@ const AnecdoteList = () => {
               {anecdote.votes} votes
             </span>
 
-            <button onClick={() => vote(anecdote.id)}>Vote</button>
+            <div className="space-x-2">
+              {anecdote.votes === 0 && (
+                <button onClick={() => remove(anecdote.id)}>Delete</button>
+              )}
+              <button onClick={() => vote(anecdote.id).then()}>Vote</button>
+            </div>
           </div>
         </div>
       ))}

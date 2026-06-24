@@ -6,13 +6,13 @@
   }
 
   button {
-    @apply px-3 py-1.5
-           bg-slate-300 text-gray-700
+    @apply px-2 py-1
+           bg-slate-200 text-gray-600
            rounded-md
-            border border-slate-300
+            border border-slate-200
            shadow-sm
            transition-colors
-           hover:bg-slate-400
+           hover:bg-slate-300
            focus:outline-none
            focus:ring-2
            focus:ring-blue-400
