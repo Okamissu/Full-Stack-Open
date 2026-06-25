@@ -3,12 +3,23 @@
     {
       "id": "1",
       "content": "tanstack query simplifies the communication with backend",
-      "important": true
+      "important": false
     },
     {
       "id": "2",
       "content": "context api provides an alternative way for sharing data between components",
       "important": false
+    },
+    {
+      "content": "IM A MUTANT",
+      "important": false,
+      "id": "E_myYfTFw6Q"
+    },
+    {
+      "content": "IM A WORKING MUTANT",
+      "important": false,
+      "id": "RgW7PjfOaaQ"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
