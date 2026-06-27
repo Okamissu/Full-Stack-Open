@@ -1,5 +1,4 @@
-import { useContext } from 'react'
-import CounterContext from './CounterContext'
+import useCounter from '../hooks/useCounter'
 
 const displayStyle = {
   padding: '10px 20px',
@@ -9,7 +8,7 @@ const displayStyle = {
 }
 
 const Display = () => {
-  const { counter } = useContext(CounterContext)
+  const { counter } = useCounter()
 
   return <div style={displayStyle}>{counter}</div>
 }
