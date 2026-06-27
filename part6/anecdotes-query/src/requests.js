@@ -11,16 +11,15 @@ export const getAnecdotes = async () => {
 }
 
 export const createAnecdote = async (newNote) => {
-  const options = {
+  const response = await fetch(baseUrl, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(newNote),
-  }
-
-  const response = await fetch(baseUrl, options)
+  })
 
   if (!response.ok) {
-    throw new Error('Failed to create note')
+    const error = await response.json()
+    throw new Error(error.error)
   }
 
   return await response.json()
