@@ -1,11 +1,11 @@
 import Display from './Display'
 import Controls from './Controls'
 
-const Panel = ({ counter, setCounter }) => {
+const Panel = () => {
   return (
     <div>
-      <Display counter={counter} />
-      <Controls counter={counter} setCounter={setCounter} />
+      <Display />
+      <Controls />
     </div>
   )
 }
