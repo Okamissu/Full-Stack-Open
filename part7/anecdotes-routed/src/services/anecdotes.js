@@ -16,11 +16,11 @@ const createNew = async (object) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(object),
   })
-  
+
   if (!response.ok) {
     throw new Error('Failed to create note')
   }
-  
+
   return await response.json()
 }
 
