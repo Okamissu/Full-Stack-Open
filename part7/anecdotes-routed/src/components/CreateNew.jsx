@@ -13,6 +13,12 @@ const CreateNew = ({ addAnecdote }) => {
     navigate('/')
   }
 
+  const handleReset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -32,7 +38,12 @@ const CreateNew = ({ addAnecdote }) => {
           url for more info
           <input name="info" {...info} />
         </label>
-        <button style={{ maxWidth: 'fit-content' }}>create</button>
+        <div>
+          <button>create</button>
+          <button type="reset" onClick={handleReset}>
+            reset
+          </button>
+        </div>
       </form>
     </div>
   )
