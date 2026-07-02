@@ -13,27 +13,6 @@
       "info": "http://wiki.c2.com/?PrematureOptimization",
       "votes": 0,
       "id": "2"
-    },
-    {
-      "content": "aa",
-      "author": "bb",
-      "info": "cc",
-      "votes": 0,
-      "id": "08dNhJfVGqw"
-    },
-    {
-      "content": "bb",
-      "author": "aa",
-      "info": "cc",
-      "votes": 0,
-      "id": "PC7PGZxOzFM"
-    },
-    {
-      "content": "bbc",
-      "author": "c",
-      "info": "ddd",
-      "votes": 0,
-      "id": "uS_3yNTRimE"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

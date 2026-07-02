@@ -17,17 +17,22 @@ export const useField = (type) => {
 }
 
 export const useAnecdotes = () => {
-  const [anecdotes, setAnegdotes] = useState([])
+  const [anecdotes, setAnecdotes] = useState([])
 
   useEffect(() => {
-    anecdoteService.getAll().then((data) => setAnegdotes(data))
+    anecdoteService.getAll().then((data) => setAnecdotes(data))
   }, [])
 
   const addAnecdote = (newAnecdote) => {
     anecdoteService
       .createNew(newAnecdote)
-      .then((result) => setAnegdotes((prev) => [...prev, result]))
+      .then((result) => setAnecdotes((prev) => [...prev, result]))
   }
 
-  return { anecdotes, addAnecdote }
+  const removeAnecdote = (id) => {
+    anecdoteService.remove(id)
+    setAnecdotes((prevAnecdotes) => prevAnecdotes.filter((a) => a.id !== id))
+  }
+
+  return { anecdotes, addAnecdote, removeAnecdote }
 }
