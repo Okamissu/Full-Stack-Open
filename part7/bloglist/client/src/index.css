@@ -1,0 +1,74 @@
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #3730a3;
+  --primary-light: #c7d2fe;
+
+  --bg: #f7f7fb;
+  --surface: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+
+  --danger: #b91c1c;
+  --danger-bg: #fef2f2;
+  --danger-border: #fca5a5;
+
+  --info: #006aff;
+  --info-bg: #c2dbff;
+  --info-border: #9ec6ff;
+
+  --radius: 0px;
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.app {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 0;
+  margin-inline: 0.5rem;
+  padding: 0;
+  color: var(--primary-light);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+h2 {
+  margin-top: 0.25rem;
+}
+
+p {
+  margin-block: 0.15rem;
+}
+
+footer {
+  color: var(--muted);
+  margin-top: 3rem;
+  font-size: 0.9rem;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 640px) {
+  .app {
+    width: min(100% - 1rem, 1120px);
+    padding-block: 1rem;
+  }
+}
