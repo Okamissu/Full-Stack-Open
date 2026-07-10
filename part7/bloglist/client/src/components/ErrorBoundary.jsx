@@ -1,5 +1,5 @@
 import React from 'react'
-import { ErrorBoundaryCard, Button } from '../styles'
+import { ErrorCard, Button } from '../styles'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <ErrorBoundaryCard>
+        <ErrorCard>
           <h2>Something went wrong</h2>
           <p>{this.state.error.message}</p>
           <Button
@@ -26,7 +26,7 @@ class ErrorBoundary extends React.Component {
           >
             Try again
           </Button>
-        </ErrorBoundaryCard>
+        </ErrorCard>
       )
     }
 

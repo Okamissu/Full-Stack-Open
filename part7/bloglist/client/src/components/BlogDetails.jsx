@@ -1,7 +1,8 @@
 import { BlogCard, BlogTitle, BlogButtons, BlogButton } from '../styles'
+import NotFound from './NotFound'
 
 const BlogDetails = ({ blog, handleLike, handleDelete, user }) => {
-  if (!blog) return null
+  if (!blog) return <NotFound />
 
   const canDelete = user && blog.user && blog.user.id === user.id
 

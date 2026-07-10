@@ -19,14 +19,12 @@ import {
 } from 'react-router-dom'
 import NavBar from './components/NavBar'
 import ErrorBoundary from './components/ErrorBoundary'
+import NotFound from './components/NotFound'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState({
-    type: 'info',
-    message: 'test',
-  })
+  const [notification, setNotification] = useState()
 
   const navigate = useNavigate()
 
@@ -181,6 +179,8 @@ const App = () => {
                 />
               }
             />
+
+            <Route path="/*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>
       </main>

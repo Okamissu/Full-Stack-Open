@@ -156,7 +156,7 @@ export const BlogButton = styled(Button)`
   font-size: 0.85rem;
 `
 
-export const ErrorBoundaryCard = styled.div`
+export const ErrorCard = styled.div`
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -173,5 +173,27 @@ export const ErrorBoundaryCard = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  }
+`
+
+export const LinkButton = styled(Link)`
+  background-color: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  width: fit-content;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #eef2ff;
+    color: var(--primary-dark);
+    transform: translateY(-1px);
   }
 `
