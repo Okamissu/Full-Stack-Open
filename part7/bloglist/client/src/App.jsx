@@ -18,6 +18,7 @@ import {
   useMatch,
 } from 'react-router-dom'
 import NavBar from './components/NavBar'
+import ErrorBoundary from './components/ErrorBoundary'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -134,52 +135,54 @@ const App = () => {
       <NavBar user={user} handleLogout={handleLogout} />
 
       <main className="app">
-        <Notification notification={notification} />
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              user ? (
-                <Navigate to="/" replace />
-              ) : (
-                <LoginForm
+        <ErrorBoundary>
+          <Notification notification={notification} />
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                user ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <LoginForm
+                    user={user}
+                    setUser={setUser}
+                    setNotification={setNotification}
+                  />
+                )
+              }
+            />
+
+            <Route
+              path="/create"
+              element={
+                user ? (
+                  <BlogForm createBlog={createBlog} />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+
+            <Route
+              path="/"
+              element={<BlogList blogs={blogs} setBlogs={setBlogs} />}
+            />
+            <Route path="/blogs" element={<Navigate to="/" />}></Route>
+
+            <Route
+              path="/blogs/:id"
+              element={
+                <BlogDetails
+                  blog={blog}
+                  handleLike={handleLike}
+                  handleDelete={handleDelete}
                   user={user}
-                  setUser={setUser}
-                  setNotification={setNotification}
                 />
-              )
-            }
-          />
-
-          <Route
-            path="/create"
-            element={
-              user ? (
-                <BlogForm createBlog={createBlog} />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-
-          <Route
-            path="/"
-            element={<BlogList blogs={blogs} setBlogs={setBlogs} />}
-          />
-          <Route path="/blogs" element={<Navigate to="/" />}></Route>
-
-          <Route
-            path="/blogs/:id"
-            element={
-              <BlogDetails
-                blog={blog}
-                handleLike={handleLike}
-                handleDelete={handleDelete}
-                user={user}
-              />
-            }
-          />
-        </Routes>
+              }
+            />
+          </Routes>
+        </ErrorBoundary>
       </main>
     </>
   )

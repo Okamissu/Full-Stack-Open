@@ -11,6 +11,8 @@ const BlogList = ({ blogs, setBlogs }) => {
     return [...blogs].sort((a, b) => b.likes - a.likes)
   }, [blogs])
 
+  throw new Error('simulated error')
+
   return (
     <>
       <ul>

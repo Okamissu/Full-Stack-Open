@@ -42,7 +42,7 @@ export const Button = styled.button`
   border-radius: var(--radius);
   cursor: pointer;
   box-shadow: var(--shadow);
-
+  width: fit-content;
   transition:
     background-color 0.2s ease,
     color 0.2s ease,
@@ -154,4 +154,24 @@ export const BlogButtons = styled.div`
 export const BlogButton = styled(Button)`
   padding: 0.35rem 0.8rem;
   font-size: 0.85rem;
+`
+
+export const ErrorBoundaryCard = styled.div`
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  padding: 1rem 1.1rem;
+  font-size: 0.95rem;
+  margin-block: 33vh;
+  width: fit-content;
+  margin-inline: auto;
+
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  }
 `
