@@ -40,6 +40,8 @@ blogsRouter.post(
       user.blogs.push(result._id)
       await user.save()
 
+      await result.populate('user')
+
       response.status(201).json(result)
     } catch (error) {
       next(error)
@@ -96,6 +98,8 @@ blogsRouter.put('/:id', async (request, response, next) => {
     blog.likes = likes
 
     const updated = await blog.save()
+
+    await updated.populate('user')
 
     response.json(updated)
   } catch (error) {
