@@ -2,10 +2,12 @@ import { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { Form, Input, Button, Label } from '../styles'
+import { useNotificationActions } from '../hooks/useNotification'
 
-const LoginForm = ({ setUser, setNotification }) => {
+const LoginForm = ({ setUser }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const { setNotification } = useNotificationActions()
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -20,7 +22,7 @@ const LoginForm = ({ setUser, setNotification }) => {
       setUsername('')
       setPassword('')
     } catch {
-      setNotification({ type: 'error', message: 'Wrong credentials' })
+      setNotification('error', 'Wrong credentials')
     }
   }
 
