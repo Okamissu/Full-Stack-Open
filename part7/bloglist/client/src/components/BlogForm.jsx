@@ -1,16 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Form, Input, Button, Label } from '../styles'
-import { useBlogActions } from '../hooks/useBlog'
 
-const BlogForm = () => {
+const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
     url: '',
   })
-
-  const { addBlog } = useBlogActions()
 
   const navigate = useNavigate()
 
@@ -23,23 +20,18 @@ const BlogForm = () => {
     })
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
 
-    try {
-      await addBlog(newBlog)
+    createBlog(newBlog)
 
-      setNewBlog({
-        title: '',
-        author: '',
-        url: '',
-      })
+    setNewBlog({
+      title: '',
+      author: '',
+      url: '',
+    })
 
-      navigate('/')
-    } catch {
-      // Notification is already shown by the store,
-      // so nothing else is required here.
-    }
+    navigate('/')
   }
 
   return (

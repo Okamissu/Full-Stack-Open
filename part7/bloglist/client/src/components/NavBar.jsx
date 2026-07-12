@@ -1,22 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Nav, NavLink } from '../styles'
 import LogoutButton from './LogoutButton'
-import { useUser, useUserActions } from '../hooks/useUser'
-import { useNotificationActions } from '../hooks/useNotification'
 
-const NavBar = () => {
-  const user = useUser()
-  const { setNotification } = useNotificationActions()
-  const { setUser } = useUserActions()
-  const navigate = useNavigate()
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogAppUser')
-    setUser(null)
-    setNotification('info', 'Logged out')
-    navigate('/')
-  }
-
+const NavBar = ({ user, handleLogout }) => {
   return (
     <Nav>
       <h1>Blog List</h1>
