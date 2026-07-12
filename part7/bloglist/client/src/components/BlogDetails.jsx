@@ -1,18 +1,18 @@
 import { useParams } from 'react-router-dom'
 import { useBlogs, useBlogActions } from '../hooks/useBlog'
-// import { useUser } from '../stores/useUserStore'
+import { useUser } from '../hooks/useUser'
 import { useNavigate } from 'react-router-dom'
 import NotFound from './NotFound'
 import { BlogCard, BlogTitle, BlogButtons, BlogButton } from '../styles'
 
-const BlogDetails = ({ user }) => {
+const BlogDetails = () => {
   const { id } = useParams()
 
   const navigate = useNavigate()
 
   const blogs = useBlogs()
   const { likeBlog, deleteBlog } = useBlogActions()
-  // const user = useUser()
+  const user = useUser()
 
   const blog = blogs.find((b) => b.id === id)
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import Blog from './components/Blog'
 import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
@@ -9,22 +9,17 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import LogoutButton from './components/LogoutButton'
 import './index.css'
-import { Route, Routes, Link, useNavigate, Navigate } from 'react-router-dom'
+import { Route, Routes, Link, Navigate } from 'react-router-dom'
 import NavBar from './components/NavBar'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
-import {
-  useNotification,
-  useNotificationActions,
-} from './hooks/useNotification'
 import { useBlogActions } from './hooks/useBlog'
+import { useUser, useUserActions } from './hooks/useUser'
 
 const App = () => {
-  const [user, setUser] = useState(null)
-  const notification = useNotification()
-  const { setNotification, resetNotification } = useNotificationActions()
+  const user = useUser()
 
-  const navigate = useNavigate()
+  const { setUser } = useUserActions()
 
   const { initializeBlogs } = useBlogActions()
 
@@ -39,28 +34,11 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
-  }, [])
-
-  useEffect(() => {
-    if (!notification.type && !notification.message) return
-
-    const timeout = setTimeout(() => {
-      resetNotification()
-    }, 5000)
-
-    return () => clearTimeout(timeout)
-  }, [notification, resetNotification])
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogAppUser')
-    setUser(null)
-    setNotification('info', 'Logged out')
-    navigate('/')
-  }
+  }, [setUser])
 
   return (
     <>
-      <NavBar user={user} handleLogout={handleLogout} />
+      <NavBar />
 
       <main className="app">
         <ErrorBoundary>
@@ -68,13 +46,7 @@ const App = () => {
           <Routes>
             <Route
               path="/login"
-              element={
-                user ? (
-                  <Navigate to="/" replace />
-                ) : (
-                  <LoginForm setUser={setUser} />
-                )
-              }
+              element={user ? <Navigate to="/" replace /> : <LoginForm />}
             />
 
             <Route
@@ -85,7 +57,7 @@ const App = () => {
             <Route path="/" element={<BlogList />} />
             <Route path="/blogs" element={<Navigate to="/" />}></Route>
 
-            <Route path="/blogs/:id" element={<BlogDetails user={user} />} />
+            <Route path="/blogs/:id" element={<BlogDetails />} />
 
             <Route path="/*" element={<NotFound />} />
           </Routes>
