@@ -1,7 +1,7 @@
 import { NotificationBox } from '../styles'
 
 const Notification = ({ notification }) => {
-  if (!notification) return null
+  if (!notification.type && !notification.message) return null
 
   return (
     <NotificationBox $error={notification.type === 'error'}>

@@ -20,11 +20,16 @@ import {
 import NavBar from './components/NavBar'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
+import {
+  useNotification,
+  useNotificationActions,
+} from './hooks/useNotification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState()
+  const notification = useNotification()
+  const { setNotification, resetNotification } = useNotificationActions()
 
   const navigate = useNavigate()
 
@@ -38,14 +43,14 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if (!notification) return
+    if (!notification.type && !notification.message) return
 
     const timeout = setTimeout(() => {
-      setNotification(null)
+      resetNotification()
     }, 5000)
 
     return () => clearTimeout(timeout)
-  }, [notification])
+  }, [notification, resetNotification])
 
   const handleLike = async (blog) => {
     try {
@@ -61,10 +66,7 @@ const App = () => {
         ),
       )
     } catch {
-      setNotification({
-        type: 'error',
-        message: "Couldn't handle the like request",
-      })
+      setNotification('error', "Couldn't handle the like request")
     }
   }
 
@@ -80,17 +82,11 @@ const App = () => {
 
       setBlogs((blogs) => blogs.filter((b) => b.id !== blog.id))
 
-      setNotification({
-        type: 'info',
-        message: `Removed blog: ${blog.title} by ${blog.author}`,
-      })
+      setNotification('info', `Removed blog: ${blog.title} by ${blog.author}`)
 
       navigate('/')
     } catch {
-      setNotification({
-        type: 'error',
-        message: "Couldn't remove the blog",
-      })
+      setNotification('error', "Couldn't remove the blog")
     }
   }
 
@@ -106,22 +102,16 @@ const App = () => {
         },
       ])
 
-      setNotification({
-        type: 'info',
-        message: 'Blog added',
-      })
+      setNotification('info', 'Blog added')
     } catch {
-      setNotification({
-        type: 'error',
-        message: 'Missing or incorrect blog data',
-      })
+      setNotification('error', 'Missing or incorrect blog data')
     }
   }
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
-    setNotification({ type: 'info', message: 'Logged out' })
+    setNotification('info', 'Logged out')
     navigate('/')
   }
 
@@ -142,11 +132,7 @@ const App = () => {
                 user ? (
                   <Navigate to="/" replace />
                 ) : (
-                  <LoginForm
-                    user={user}
-                    setUser={setUser}
-                    setNotification={setNotification}
-                  />
+                  <LoginForm user={user} setUser={setUser} />
                 )
               }
             />
