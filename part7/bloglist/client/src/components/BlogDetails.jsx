@@ -1,19 +1,38 @@
 import { useParams } from 'react-router-dom'
 import { useBlogs, useBlogActions } from '../hooks/useBlog'
+// import { useUser } from '../stores/useUserStore'
+import { useNavigate } from 'react-router-dom'
 import NotFound from './NotFound'
 import { BlogCard, BlogTitle, BlogButtons, BlogButton } from '../styles'
 
 const BlogDetails = ({ user }) => {
   const { id } = useParams()
 
+  const navigate = useNavigate()
+
   const blogs = useBlogs()
   const { likeBlog, deleteBlog } = useBlogActions()
+  // const user = useUser()
 
   const blog = blogs.find((b) => b.id === id)
 
   if (!blog) return <NotFound />
 
   const canDelete = user && blog.user && blog.user.id === user.id
+
+  const handleDelete = async (blog) => {
+    const confirmed = window.confirm(
+      `Remove blog ${blog.title} by ${blog.author}?`,
+    )
+    if (!confirmed) return
+    try {
+      deleteBlog(blog)
+      navigate('/')
+    } catch {
+      // Notification is already shown by the store,
+      // so nothing else is required here.
+    }
+  }
 
   return (
     <BlogCard>
@@ -37,7 +56,9 @@ const BlogDetails = ({ user }) => {
           <BlogButton onClick={() => likeBlog(blog)}>💜 Like</BlogButton>
 
           {canDelete && (
-            <BlogButton onClick={() => deleteBlog(blog)}>🗑️ Remove</BlogButton>
+            <BlogButton onClick={() => handleDelete(blog)}>
+              🗑️ Remove
+            </BlogButton>
           )}
         </BlogButtons>
       )}

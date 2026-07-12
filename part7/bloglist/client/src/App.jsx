@@ -9,14 +9,7 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import LogoutButton from './components/LogoutButton'
 import './index.css'
-import {
-  Route,
-  Routes,
-  Link,
-  useNavigate,
-  Navigate,
-  useMatch,
-} from 'react-router-dom'
+import { Route, Routes, Link, useNavigate, Navigate } from 'react-router-dom'
 import NavBar from './components/NavBar'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
@@ -58,38 +51,6 @@ const App = () => {
     return () => clearTimeout(timeout)
   }, [notification, resetNotification])
 
-  const handleLike = async (blog) => {
-    // try {
-    //   const updatedBlog = await blogService.update({
-    //     ...blog,
-    //     likes: blog.likes + 1,
-    //     user: blog.user.id,
-    //   })
-    //   setBlogs((blogs) =>
-    //     blogs.map((b) =>
-    //       b.id === blog.id ? { ...updatedBlog, user: blog.user } : b,
-    //     ),
-    //   )
-    // } catch {
-    //   setNotification('error', "Couldn't handle the like request")
-    // }
-  }
-
-  const handleDelete = async (blog) => {
-    // const confirmed = window.confirm(
-    //   `Remove blog ${blog.title} by ${blog.author}?`,
-    // )
-    // if (!confirmed) return
-    // try {
-    //   await blogService.remove(blog.id)
-    //   setBlogs((blogs) => blogs.filter((b) => b.id !== blog.id))
-    //   setNotification('info', `Removed blog: ${blog.title} by ${blog.author}`)
-    //   navigate('/')
-    // } catch {
-    //   setNotification('error', "Couldn't remove the blog")
-    // }
-  }
-
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
@@ -103,7 +64,7 @@ const App = () => {
 
       <main className="app">
         <ErrorBoundary>
-          <Notification notification={notification} />
+          <Notification />
           <Routes>
             <Route
               path="/login"
@@ -111,22 +72,14 @@ const App = () => {
                 user ? (
                   <Navigate to="/" replace />
                 ) : (
-                  <LoginForm user={user} setUser={setUser} />
+                  <LoginForm setUser={setUser} />
                 )
               }
             />
 
             <Route
               path="/create"
-              element={
-                user ? (
-                  <BlogForm
-                  //createBlog={createBlog}
-                  />
-                ) : (
-                  <Navigate to="/login" replace />
-                )
-              }
+              element={user ? <BlogForm /> : <Navigate to="/login" replace />}
             />
 
             <Route path="/" element={<BlogList />} />
