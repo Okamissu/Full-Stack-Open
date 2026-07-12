@@ -1,6 +1,8 @@
 import { NotificationBox } from '../styles'
+import { useNotification } from '../hooks/useNotification'
 
-const Notification = ({ notification }) => {
+const Notification = () => {
+  const notification = useNotification()
   if (!notification.type && !notification.message) return null
 
   return (
