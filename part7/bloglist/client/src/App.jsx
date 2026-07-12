@@ -24,14 +24,20 @@ import {
   useNotification,
   useNotificationActions,
 } from './hooks/useNotification'
+import { useBlogActions } from './hooks/useBlog'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const notification = useNotification()
   const { setNotification, resetNotification } = useNotificationActions()
 
   const navigate = useNavigate()
+
+  const { initializeBlogs } = useBlogActions()
+
+  useEffect(() => {
+    initializeBlogs()
+  }, [initializeBlogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -53,59 +59,35 @@ const App = () => {
   }, [notification, resetNotification])
 
   const handleLike = async (blog) => {
-    try {
-      const updatedBlog = await blogService.update({
-        ...blog,
-        likes: blog.likes + 1,
-        user: blog.user.id,
-      })
-
-      setBlogs((blogs) =>
-        blogs.map((b) =>
-          b.id === blog.id ? { ...updatedBlog, user: blog.user } : b,
-        ),
-      )
-    } catch {
-      setNotification('error', "Couldn't handle the like request")
-    }
+    // try {
+    //   const updatedBlog = await blogService.update({
+    //     ...blog,
+    //     likes: blog.likes + 1,
+    //     user: blog.user.id,
+    //   })
+    //   setBlogs((blogs) =>
+    //     blogs.map((b) =>
+    //       b.id === blog.id ? { ...updatedBlog, user: blog.user } : b,
+    //     ),
+    //   )
+    // } catch {
+    //   setNotification('error', "Couldn't handle the like request")
+    // }
   }
 
   const handleDelete = async (blog) => {
-    const confirmed = window.confirm(
-      `Remove blog ${blog.title} by ${blog.author}?`,
-    )
-
-    if (!confirmed) return
-
-    try {
-      await blogService.remove(blog.id)
-
-      setBlogs((blogs) => blogs.filter((b) => b.id !== blog.id))
-
-      setNotification('info', `Removed blog: ${blog.title} by ${blog.author}`)
-
-      navigate('/')
-    } catch {
-      setNotification('error', "Couldn't remove the blog")
-    }
-  }
-
-  const createBlog = async (newBlog) => {
-    try {
-      const response = await blogService.create(newBlog)
-
-      setBlogs((prevBlogs) => [
-        ...prevBlogs,
-        {
-          ...response,
-          user: user,
-        },
-      ])
-
-      setNotification('info', 'Blog added')
-    } catch {
-      setNotification('error', 'Missing or incorrect blog data')
-    }
+    // const confirmed = window.confirm(
+    //   `Remove blog ${blog.title} by ${blog.author}?`,
+    // )
+    // if (!confirmed) return
+    // try {
+    //   await blogService.remove(blog.id)
+    //   setBlogs((blogs) => blogs.filter((b) => b.id !== blog.id))
+    //   setNotification('info', `Removed blog: ${blog.title} by ${blog.author}`)
+    //   navigate('/')
+    // } catch {
+    //   setNotification('error', "Couldn't remove the blog")
+    // }
   }
 
   const handleLogout = () => {
@@ -114,9 +96,6 @@ const App = () => {
     setNotification('info', 'Logged out')
     navigate('/')
   }
-
-  const match = useMatch('/blogs/:id')
-  const blog = match ? blogs.find((blog) => blog.id === match.params.id) : null
 
   return (
     <>
@@ -141,30 +120,19 @@ const App = () => {
               path="/create"
               element={
                 user ? (
-                  <BlogForm createBlog={createBlog} />
+                  <BlogForm
+                  //createBlog={createBlog}
+                  />
                 ) : (
                   <Navigate to="/login" replace />
                 )
               }
             />
 
-            <Route
-              path="/"
-              element={<BlogList blogs={blogs} setBlogs={setBlogs} />}
-            />
+            <Route path="/" element={<BlogList />} />
             <Route path="/blogs" element={<Navigate to="/" />}></Route>
 
-            <Route
-              path="/blogs/:id"
-              element={
-                <BlogDetails
-                  blog={blog}
-                  handleLike={handleLike}
-                  handleDelete={handleDelete}
-                  user={user}
-                />
-              }
-            />
+            <Route path="/blogs/:id" element={<BlogDetails user={user} />} />
 
             <Route path="/*" element={<NotFound />} />
           </Routes>

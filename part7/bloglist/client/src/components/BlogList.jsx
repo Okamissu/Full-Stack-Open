@@ -1,11 +1,9 @@
-import { useEffect, useMemo } from 'react'
-import blogService from '../services/blogs'
+import { useMemo } from 'react'
 import Blog from './Blog'
+import { useBlogs } from '../hooks/useBlog'
 
-const BlogList = ({ blogs, setBlogs }) => {
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [setBlogs])
+const BlogList = () => {
+  const blogs = useBlogs()
 
   const sortedBlogs = useMemo(() => {
     return [...blogs].sort((a, b) => b.likes - a.likes)
