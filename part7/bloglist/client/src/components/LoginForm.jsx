@@ -3,11 +3,13 @@ import useNotification from '../hooks/useNotification'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { Form, Input, Button, Label } from '../styles'
+import useUser from '../hooks/useUser'
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const { dispatch } = useNotification()
+  const [, userDispatch] = useUser()
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -18,7 +20,10 @@ const LoginForm = ({ setUser }) => {
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
 
-      setUser(user)
+      userDispatch({
+        type: 'SET_USER',
+        payload: user,
+      })
       setUsername('')
       setPassword('')
     } catch {

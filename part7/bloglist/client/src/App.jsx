@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import useNotification from './hooks/useNotification'
 import useBlogs from './hooks/useBlogs'
+import useUser from './hooks/useUser'
 import blogService from './services/blogs'
 import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
@@ -20,7 +21,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const [user, userDispatch] = useUser()
   const { dispatch } = useNotification()
   const navigate = useNavigate()
 
@@ -29,14 +30,19 @@ const App = () => {
 
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      userDispatch({
+        type: 'SET_USER',
+        payload: user,
+      })
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [userDispatch])
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
-    setUser(null)
+    userDispatch({
+      type: 'LOGOUT',
+    })
     dispatch({ type: 'log_out' })
     navigate('/')
   }
@@ -59,13 +65,7 @@ const App = () => {
           <Routes>
             <Route
               path="/login"
-              element={
-                user ? (
-                  <Navigate to="/" replace />
-                ) : (
-                  <LoginForm user={user} setUser={setUser} />
-                )
-              }
+              element={user ? <Navigate to="/" replace /> : <LoginForm />}
             />
 
             <Route
