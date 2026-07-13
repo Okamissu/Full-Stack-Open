@@ -8,8 +8,6 @@ const UserList = () => {
     return <div>Loading...</div>
   }
 
-  console.log(users)
-
   return (
     <>
       <h2>Users</h2>
