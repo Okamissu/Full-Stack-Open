@@ -3,6 +3,7 @@ import useNotification from './hooks/useNotification'
 import useBlogs from './hooks/useBlogs'
 import useUser from './hooks/useUser'
 import blogService from './services/blogs'
+import persistentUser from './services/persistentUser'
 import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
@@ -26,20 +27,20 @@ const App = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+    const persistedUser = persistentUser.getUser()
 
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
+    if (persistedUser) {
       userDispatch({
         type: 'SET_USER',
-        payload: user,
+        payload: persistedUser,
       })
-      blogService.setToken(user.token)
+
+      blogService.setToken(persistedUser.token)
     }
   }, [userDispatch])
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogAppUser')
+    persistentUser.removeUser()
     userDispatch({
       type: 'LOGOUT',
     })

@@ -1,35 +1,26 @@
-import { useState } from 'react'
+import useField from '../hooks/useField'
 import { useNavigate } from 'react-router-dom'
 import { Form, Input, Button, Label } from '../styles'
 
 const BlogForm = ({ createBlog }) => {
-  const [newBlog, setNewBlog] = useState({
-    title: '',
-    author: '',
-    url: '',
-  })
+  const { reset: resetTitle, ...title } = useField('text')
+  const { reset: resetAuthor, ...author } = useField('text')
+  const { reset: resetUrl, ...url } = useField('url')
 
   const navigate = useNavigate()
-
-  const handleChange = (event) => {
-    const { name, value } = event.target
-
-    setNewBlog({
-      ...newBlog,
-      [name]: value,
-    })
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    createBlog(newBlog)
-
-    setNewBlog({
-      title: '',
-      author: '',
-      url: '',
+    createBlog({
+      title: title.value,
+      author: author.value,
+      url: url.value,
     })
+
+    resetTitle()
+    resetAuthor()
+    resetUrl()
 
     navigate('/')
   }
@@ -40,34 +31,21 @@ const BlogForm = ({ createBlog }) => {
         <h2>Create a new blog</h2>
         <Label>
           Title:
-          <Input
-            name="title"
-            type="text"
-            placeholder="A blog title..."
-            value={newBlog.title}
-            onChange={handleChange}
-          />
+          <Input name="title" placeholder="A blog title..." {...title} />
         </Label>
 
         <Label>
           Author:
-          <Input
-            name="author"
-            type="text"
-            placeholder="Blog author"
-            value={newBlog.author}
-            onChange={handleChange}
-          />
+          <Input name="author" placeholder="Blog author" {...author} />
         </Label>
 
         <Label>
           URL:
           <Input
             name="url"
-            type="url"
-            placeholder="https://www.example.com"
-            value={newBlog.url}
-            onChange={handleChange}
+            placeholder="https://example.com"
+            autoComplete="url"
+            {...url}
           />
         </Label>
 

@@ -1,13 +1,15 @@
-import { useState } from 'react'
 import useNotification from '../hooks/useNotification'
+import useField from '../hooks/useField'
+import persistentUser from '../services/persistentUser'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { Form, Input, Button, Label } from '../styles'
 import useUser from '../hooks/useUser'
 
 const LoginForm = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const { reset: resetUsername, ...username } = useField('text')
+
+  const { reset: resetPassword, ...password } = useField('password')
   const { dispatch } = useNotification()
   const [, userDispatch] = useUser()
 
@@ -15,17 +17,20 @@ const LoginForm = () => {
     e.preventDefault()
 
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login({
+        username: username.value,
+        password: password.value,
+      })
 
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+      persistentUser.saveUser(user)
       blogService.setToken(user.token)
 
       userDispatch({
         type: 'SET_USER',
         payload: user,
       })
-      setUsername('')
-      setPassword('')
+      resetUsername()
+      resetPassword()
     } catch {
       dispatch({ type: 'wrong_credentials' })
     }
@@ -35,28 +40,18 @@ const LoginForm = () => {
     <Form onSubmit={handleLogin}>
       <h2>Login</h2>
       <div>
-        <Label htmlFor="username">
+        <Label>
           Username
-          <Input
-            type="text"
-            value={username}
-            id="username"
-            onChange={({ target }) => {
-              setUsername(target.value)
-            }}
-          />
+          <Input name="username" autoComplete="username" {...username} />
         </Label>
       </div>
       <div>
-        <Label htmlFor="password">
+        <Label>
           Password
           <Input
-            type="password"
-            value={password}
-            id="password"
-            onChange={({ target }) => {
-              setPassword(target.value)
-            }}
+            name="password"
+            autoComplete="current-password"
+            {...password}
           />
         </Label>
       </div>
