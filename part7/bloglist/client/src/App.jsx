@@ -1,20 +1,16 @@
 import { useState, useEffect } from 'react'
 import useNotification from './hooks/useNotification'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import Blog from './components/Blog'
+import useBlogs from './hooks/useBlogs'
+import blogService from './services/blogs'
 import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
-import blogService from './services/blogs'
-import LogoutButton from './components/LogoutButton'
 import './index.css'
 import {
   Route,
   Routes,
-  Link,
   useNavigate,
   Navigate,
   useMatch,
@@ -26,30 +22,11 @@ import NotFound from './components/NotFound'
 const App = () => {
   const [user, setUser] = useState(null)
   const { dispatch } = useNotification()
-  const queryClient = useQueryClient()
-
-  const result = useQuery({
-    queryKey: ['blogs'],
-    queryFn: blogService.getAll,
-  })
-
-  const blogs = result.data || []
-
-  const createBlogMutation = useMutation({
-    mutationFn: blogService.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['blogs'] })
-      dispatch({ type: 'add_info' })
-    },
-    onError: () => {
-      dispatch({ type: 'add_error' })
-    },
-  })
-
   const navigate = useNavigate()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -57,58 +34,17 @@ const App = () => {
     }
   }, [])
 
-  const handleLike = async (blog) => {
-    try {
-      const updatedBlog = await blogService.update({
-        ...blog,
-        likes: blog.likes + 1,
-        user: blog.user.id,
-      })
-
-      setBlogs((blogs) =>
-        blogs.map((b) =>
-          b.id === blog.id ? { ...updatedBlog, user: blog.user } : b,
-        ),
-      )
-    } catch {
-      dispatch({ type: 'like_error' })
-    }
-  }
-
-  const handleDelete = async (blog) => {
-    const confirmed = window.confirm(
-      `Remove blog ${blog.title} by ${blog.author}?`,
-    )
-
-    if (!confirmed) return
-
-    try {
-      await blogService.remove(blog.id)
-
-      setBlogs((blogs) => blogs.filter((b) => b.id !== blog.id))
-
-      dispatch({
-        type: 'remove_info',
-        title: blog.title,
-        author: blog.author,
-      })
-
-      navigate('/')
-    } catch {
-      dispatch({ type: 'remove_error' })
-    }
-  }
-
-  const createBlog = (newBlog) => {
-    createBlogMutation.mutate(newBlog)
-  }
-
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
     dispatch({ type: 'log_out' })
     navigate('/')
   }
+
+  const { blogs, createBlog, likeBlog, deleteBlog } = useBlogs(
+    dispatch,
+    navigate,
+  )
 
   const match = useMatch('/blogs/:id')
   const blog = match ? blogs.find((blog) => blog.id === match.params.id) : null
@@ -151,8 +87,8 @@ const App = () => {
               element={
                 <BlogDetails
                   blog={blog}
-                  handleLike={handleLike}
-                  handleDelete={handleDelete}
+                  handleLike={likeBlog}
+                  handleDelete={deleteBlog}
                   user={user}
                 />
               }
