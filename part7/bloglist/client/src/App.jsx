@@ -50,7 +50,7 @@ const App = () => {
     navigate('/')
   }
 
-  const { blogs, createBlog, likeBlog, deleteBlog } = useBlogs(
+  const { blogs, createBlog, likeBlog, deleteBlog, addComment } = useBlogs(
     dispatch,
     navigate,
   )
@@ -93,6 +93,7 @@ const App = () => {
                   handleLike={likeBlog}
                   handleDelete={deleteBlog}
                   user={user}
+                  addComment={addComment}
                 />
               }
             />

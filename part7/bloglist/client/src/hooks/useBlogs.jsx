@@ -31,6 +31,16 @@ const useBlogs = (dispatch, navigate) => {
     },
   })
 
+  const commentMutation = useMutation({
+    mutationFn: ({ id, comment }) => blogService.addComment(id, comment),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['blogs'],
+      })
+    },
+  })
+
   const deleteMutation = useMutation({
     mutationFn: (blog) => blogService.remove(blog.id),
 
@@ -63,6 +73,10 @@ const useBlogs = (dispatch, navigate) => {
         likes: blog.likes + 1,
         user: blog.user.id,
       }),
+
+    addComment: (id, comment) => {
+      commentMutation.mutate({ id, comment })
+    },
 
     deleteBlog: (blog) => deleteMutation.mutate(blog),
   }
