@@ -9,6 +9,7 @@ const NavBar = ({ user, handleLogout }) => {
 
       <NavLink to="/">Blogs</NavLink>
       {user && <NavLink to="/create">New Blog</NavLink>}
+      {user && <NavLink to="/users">Users</NavLink>}
       {!user && <NavLink to="/login">Login</NavLink>}
 
       {user && <LogoutButton handleLogout={handleLogout} user={user} />}

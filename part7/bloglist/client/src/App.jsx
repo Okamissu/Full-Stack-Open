@@ -20,6 +20,7 @@ import {
 import NavBar from './components/NavBar'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
+import UserList from './components/UserList'
 
 const App = () => {
   const [user, userDispatch] = useUser()
@@ -94,6 +95,8 @@ const App = () => {
                 />
               }
             />
+
+            <Route path="/users" element={<UserList />} />
 
             <Route path="/*" element={<NotFound />} />
           </Routes>
