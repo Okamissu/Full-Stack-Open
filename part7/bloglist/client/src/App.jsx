@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import useNotification from './hooks/useNotification'
 import Blog from './components/Blog'
 import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
@@ -24,7 +25,7 @@ import NotFound from './components/NotFound'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState()
+  const { dispatch } = useNotification()
 
   const navigate = useNavigate()
 
@@ -36,16 +37,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
-  useEffect(() => {
-    if (!notification) return
-
-    const timeout = setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-
-    return () => clearTimeout(timeout)
-  }, [notification])
 
   const handleLike = async (blog) => {
     try {
@@ -61,10 +52,7 @@ const App = () => {
         ),
       )
     } catch {
-      setNotification({
-        type: 'error',
-        message: "Couldn't handle the like request",
-      })
+      dispatch({ type: 'like_error' })
     }
   }
 
@@ -80,17 +68,15 @@ const App = () => {
 
       setBlogs((blogs) => blogs.filter((b) => b.id !== blog.id))
 
-      setNotification({
-        type: 'info',
-        message: `Removed blog: ${blog.title} by ${blog.author}`,
+      dispatch({
+        type: 'remove_info',
+        title: blog.title,
+        author: blog.author,
       })
 
       navigate('/')
     } catch {
-      setNotification({
-        type: 'error',
-        message: "Couldn't remove the blog",
-      })
+      dispatch({ type: 'remove_error' })
     }
   }
 
@@ -106,22 +92,16 @@ const App = () => {
         },
       ])
 
-      setNotification({
-        type: 'info',
-        message: 'Blog added',
-      })
+      dispatch({ type: 'add_info' })
     } catch {
-      setNotification({
-        type: 'error',
-        message: 'Missing or incorrect blog data',
-      })
+      dispatch({ type: 'add_error' })
     }
   }
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
-    setNotification({ type: 'info', message: 'Logged out' })
+    dispatch({ type: 'log_out' })
     navigate('/')
   }
 
@@ -134,7 +114,7 @@ const App = () => {
 
       <main className="app">
         <ErrorBoundary>
-          <Notification notification={notification} />
+          <Notification />
           <Routes>
             <Route
               path="/login"
@@ -142,11 +122,7 @@ const App = () => {
                 user ? (
                   <Navigate to="/" replace />
                 ) : (
-                  <LoginForm
-                    user={user}
-                    setUser={setUser}
-                    setNotification={setNotification}
-                  />
+                  <LoginForm user={user} setUser={setUser} />
                 )
               }
             />
@@ -187,4 +163,5 @@ const App = () => {
     </>
   )
 }
+
 export default App
