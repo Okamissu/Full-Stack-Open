@@ -8,8 +8,8 @@ const NavBar = ({ user, handleLogout }) => {
       <h1>Blog List</h1>
 
       <NavLink to="/">Blogs</NavLink>
+      <NavLink to="/users">Users</NavLink>
       {user && <NavLink to="/create">New Blog</NavLink>}
-      {user && <NavLink to="/users">Users</NavLink>}
       {!user && <NavLink to="/login">Login</NavLink>}
 
       {user && <LogoutButton handleLogout={handleLogout} user={user} />}

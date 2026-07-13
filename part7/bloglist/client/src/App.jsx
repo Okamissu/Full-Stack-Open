@@ -9,6 +9,7 @@ import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import UserDetails from './components/UserDetails'
 import './index.css'
 import {
   Route,
@@ -97,6 +98,7 @@ const App = () => {
             />
 
             <Route path="/users" element={<UserList />} />
+            <Route path="/users/:id" element={<UserDetails />} />
 
             <Route path="/*" element={<NotFound />} />
           </Routes>
