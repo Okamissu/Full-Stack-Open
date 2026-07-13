@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import useNotification from './hooks/useNotification'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import Blog from './components/Blog'
 import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
@@ -23,9 +24,27 @@ import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const { dispatch } = useNotification()
+  const queryClient = useQueryClient()
+
+  const result = useQuery({
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+  })
+
+  const blogs = result.data || []
+
+  const createBlogMutation = useMutation({
+    mutationFn: blogService.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+      dispatch({ type: 'add_info' })
+    },
+    onError: () => {
+      dispatch({ type: 'add_error' })
+    },
+  })
 
   const navigate = useNavigate()
 
@@ -80,22 +99,8 @@ const App = () => {
     }
   }
 
-  const createBlog = async (newBlog) => {
-    try {
-      const response = await blogService.create(newBlog)
-
-      setBlogs((prevBlogs) => [
-        ...prevBlogs,
-        {
-          ...response,
-          user: user,
-        },
-      ])
-
-      dispatch({ type: 'add_info' })
-    } catch {
-      dispatch({ type: 'add_error' })
-    }
+  const createBlog = (newBlog) => {
+    createBlogMutation.mutate(newBlog)
   }
 
   const handleLogout = () => {
@@ -138,10 +143,7 @@ const App = () => {
               }
             />
 
-            <Route
-              path="/"
-              element={<BlogList blogs={blogs} setBlogs={setBlogs} />}
-            />
+            <Route path="/" element={<BlogList blogs={blogs} />} />
             <Route path="/blogs" element={<Navigate to="/" />}></Route>
 
             <Route

@@ -3,15 +3,19 @@ import { StrictMode } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import NotificationProvider from './contexts/NotificationProvider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const root = createRoot(document.getElementById('root'))
+const queryClient = new QueryClient()
 
 root.render(
   <StrictMode>
-    <BrowserRouter>
-      <NotificationProvider>
-        <App />
-      </NotificationProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   </StrictMode>,
 )
