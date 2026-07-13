@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
 import useUsers from '../hooks/useUsers'
+import { Table, Th, Td, TableLink } from '../styles'
 
 const UserList = () => {
   const { data: users = [], isLoading } = useUsers()
@@ -12,27 +12,27 @@ const UserList = () => {
     <>
       <h2>Users</h2>
 
-      <table>
+      <Table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Blogs created</th>
+            <Th>Name</Th>
+            <Th>Username</Th>
+            <Th>Blogs created</Th>
           </tr>
         </thead>
 
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td>
-                <Link to={`/users/${user.id}`}>{user.name}</Link>
-              </td>
-              <td>{user.username}</td>
-              <td>{user.blogs.length}</td>
+              <Td>
+                <TableLink to={`/users/${user.id}`}>{user.name}</TableLink>
+              </Td>
+              <Td>{user.username}</Td>
+              <Td>{user.blogs.length}</Td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </>
   )
 }

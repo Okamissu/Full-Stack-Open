@@ -19,7 +19,6 @@ export const Form = styled.form`
 
 export const Input = styled.input`
   display: block;
-  width: 100%;
   border: 1px solid #d1d5db;
   border-radius: var(--radius);
   padding: 0.65rem 0.8rem;
@@ -196,4 +195,46 @@ export const LinkButton = styled(Link)`
     color: var(--primary-dark);
     transform: translateY(-1px);
   }
+`
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+`
+
+export const Th = styled.th`
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--primary);
+`
+
+export const Td = styled.td`
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+`
+
+export const TableLink = styled(Link)`
+  color: var(--primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
+export const CommentList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+`
+
+export const CommentItem = styled.li`
+  background: var(--bg);
+  border-left: 4px solid var(--primary);
+  padding: 0.75rem 1rem;
 `

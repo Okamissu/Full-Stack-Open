@@ -1,5 +1,12 @@
 import { useParams } from 'react-router-dom'
 import useUsers from '../hooks/useUsers'
+import {
+  BlogCard,
+  BlogTitle,
+  CommentItem,
+  CommentList,
+  LinkButton,
+} from '../styles'
 
 const UserDetails = () => {
   const { id } = useParams()
@@ -13,17 +20,24 @@ const UserDetails = () => {
   if (!user) return <div>User not found</div>
 
   return (
-    <>
-      <h2>{user.name}</h2>
+    <BlogCard>
+      <BlogTitle>{user.name}</BlogTitle>
+      <div>
+        <h4>Added blogs</h4>
 
-      <h3>Added blogs</h3>
+        <CommentList>
+          {user.blogs.length > 0 ? (
+            user.blogs.map((blog) => (
+              <CommentItem key={blog.id}>{blog.title}</CommentItem>
+            ))
+          ) : (
+            <p>No blog was added yet</p>
+          )}
+        </CommentList>
+      </div>
 
-      <ul>
-        {user.blogs.map((blog) => (
-          <li key={blog.id}>{blog.title}</li>
-        ))}
-      </ul>
-    </>
+      <LinkButton to="/users">← Back to users</LinkButton>
+    </BlogCard>
   )
 }
 

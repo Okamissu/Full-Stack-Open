@@ -1,4 +1,15 @@
-import { BlogCard, BlogTitle, BlogButtons, BlogButton } from '../styles'
+import {
+  BlogCard,
+  BlogTitle,
+  BlogButtons,
+  BlogButton,
+  Form,
+  Label,
+  Input,
+  Button,
+  CommentList,
+  CommentItem,
+} from '../styles'
 import useField from '../hooks/useField'
 import NotFound from './NotFound'
 
@@ -50,17 +61,19 @@ const BlogDetails = ({ blog, handleLike, handleDelete, user, addComment }) => {
       )}
 
       <form onSubmit={handleSubmit}>
-        <input {...comment} />
-        <button type="submit">add comment</button>
+        <Label>Add comment</Label>
+        <Input {...comment} />
+        <Button type="submit">Add comment</Button>
       </form>
+      <div>
+        <h3>Comments</h3>
 
-      <h3>Comments</h3>
-
-      <ul>
-        {blog.comments.map((comment, index) => (
-          <li key={index}>{comment}</li>
-        ))}
-      </ul>
+        <CommentList>
+          {blog.comments.map((comment, index) => (
+            <CommentItem key={index}>{comment}</CommentItem>
+          ))}
+        </CommentList>
+      </div>
     </BlogCard>
   )
 }
